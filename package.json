@@ -1,0 +1,20 @@
+{
+  "name": "choconautas",
+  "version": "1.0.0",
+  "description": "Proyecto Sistemas Web II",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HugoAHerrera/Choconautas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HugoAHerrera/Choconautas/issues"
+  },
+  "homepage": "https://github.com/HugoAHerrera/Choconautas#readme"
+}

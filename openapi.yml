@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: API de Noticias Espaciales
+  description: API REST para gestionar noticias espaciales con datos de la NASA.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor local
+paths:
+  /noticias:
+    get:
+      summary: Obtener todas las noticias
+      description: Devuelve una lista de noticias espaciales almacenadas en MongoDB.
+      parameters:
+        - name: format
+          in: query
+          description: Formato de respuesta (json o xml)
+          schema:
+            type: string
+            enum: [json, xml]
+      responses:
+        '200':
+          description: Lista de noticias obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+            application/xml:
+              schema:
+                type: string
+        '500':
+          description: Error en el servidor
+    post:
+      summary: Crear una nueva noticia
+      description: Permite a los usuarios crear una noticia espacial.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Noticia'
+      responses:
+        '201':
+          description: Noticia creada exitosamente
+        '400':
+          description: Datos inválidos
+  /noticias/{id}:
+    get:
+      summary: Obtener una noticia por ID
+      description: Devuelve una noticia específica según su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la noticia a obtener
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Noticia obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Noticia'
+        '404':
+          description: Noticia no encontrada

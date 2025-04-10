@@ -1,0 +1,645 @@
+openapi: 3.0.3
+info:
+  title: API REST para Sistema de Noticias
+  description: API para gestión de noticias, comentarios, usuarios y categorías
+  version: 1.0.0
+servers:
+  - url: http://api.example.com/v1
+    description: Servidor de producción
+  - url: http://localhost:8080/v1
+    description: Servidor de desarrollo
+
+paths:
+  /noticias:
+    get:
+      summary: Lista de todas las noticias
+      description: Obtiene todas las noticias disponibles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+    post:
+      summary: Crear una nueva noticia
+      description: Crea una nueva noticia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticiaInput'
+      responses:
+        '201':
+          description: Noticia creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Noticia'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/id/{id}:
+    get:
+      summary: Obtener noticia concreta
+      description: Obtiene la noticia especificada
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Noticia'
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Actualizar los datos de una noticia concreta
+      description: Modifica los datos de la noticia
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticiaInput'
+      responses:
+        '200':
+          description: Noticia actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Noticia'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Borrar una noticia concreta
+      description: Elimina la noticia
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      responses:
+        '204':
+          description: Noticia eliminada (sin contenido)
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/fecha/{fecha}:
+    get:
+      summary: Obtener las noticias de un día específico
+      description: Devuelve todas las noticias publicadas en esa fecha
+      parameters:
+        - name: fecha
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+        '400':
+          description: Fecha inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No hay noticias para esa fecha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/{noticia-id}/comentarios:
+    get:
+      summary: Obtener comentarios de una noticia
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comentario'
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Publicar un comentario en una noticia
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComentarioInput'
+      responses:
+        '201':
+          description: Comentario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comentario'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Borrar los comentarios de una noticia
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+      responses:
+        '204':
+          description: Comentarios eliminados (sin contenido)
+        '404':
+          description: Noticia no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/{noticia-id}/comentarios/{comentario-id}:
+    put:
+      summary: Modificar un comentario concreto
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+        - $ref: '#/components/parameters/ComentarioId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComentarioInput'
+      responses:
+        '200':
+          description: Comentario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comentario'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Borrar un comentario concreto
+      parameters:
+        - $ref: '#/components/parameters/NoticiaId'
+        - $ref: '#/components/parameters/ComentarioId'
+      responses:
+        '204':
+          description: Comentario eliminado (sin contenido)
+        '404':
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /usuarios:
+    post:
+      summary: Crear un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /usuarios/{usuario-id}:
+    get:
+      summary: Publicaciones de un usuario
+      parameters:
+        - $ref: '#/components/parameters/UsuarioId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Actualizar datos del usuario
+      parameters:
+        - $ref: '#/components/parameters/UsuarioId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Borrar un usuario
+      parameters:
+        - $ref: '#/components/parameters/UsuarioId'
+      responses:
+        '204':
+          description: Usuario eliminado (sin contenido)
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/nasa:
+    get:
+      summary: Obtener noticias de la NASA
+      description: Recupera las últimas noticias de la NASA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+        '503':
+          description: Servicio no disponible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /noticias/nasa/{fecha}:
+    get:
+      summary: Obtener noticias de la NASA de un día específico
+      parameters:
+        - name: fecha
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+        '400':
+          description: Fecha inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No hay noticias para esa fecha
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Servicio no disponible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /categorias:
+    get:
+      summary: Listar todas las categorías
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+    post:
+      summary: Crear una nueva categoría
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoriaInput'
+      responses:
+        '201':
+          description: Categoría creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+        '400':
+          description: Solicitud incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /categorias/{categoria-id}:
+    get:
+      summary: Obtener noticias de una categoría
+      parameters:
+        - $ref: '#/components/parameters/CategoriaId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Noticia'
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Noticia:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        titulo:
+          type: string
+        contenido:
+          type: string
+        fecha:
+          type: string
+          format: date-time
+        autor:
+          $ref: '#/components/schemas/Usuario'
+        categoria:
+          $ref: '#/components/schemas/Categoria'
+        comentarios:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comentario'
+      required:
+        - id
+        - titulo
+        - contenido
+        - fecha
+        - autor
+
+    NoticiaInput:
+      type: object
+      properties:
+        titulo:
+          type: string
+        contenido:
+          type: string
+        autorId:
+          type: integer
+          format: int64
+        categoriaId:
+          type: integer
+          format: int64
+      required:
+        - titulo
+        - contenido
+        - autorId
+
+    Comentario:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        contenido:
+          type: string
+        fecha:
+          type: string
+          format: date-time
+        autor:
+          $ref: '#/components/schemas/Usuario'
+        noticiaId:
+          type: integer
+          format: int64
+      required:
+        - id
+        - contenido
+        - fecha
+        - autor
+        - noticiaId
+
+    ComentarioInput:
+      type: object
+      properties:
+        contenido:
+          type: string
+        autorId:
+          type: integer
+          format: int64
+      required:
+        - contenido
+        - autorId
+
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        email:
+          type: string
+          format: email
+        fechaRegistro:
+          type: string
+          format: date-time
+      required:
+        - id
+        - nombre
+        - email
+        - fechaRegistro
+
+    UsuarioInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - nombre
+        - email
+        - password
+
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+      required:
+        - id
+        - nombre
+
+    CategoriaInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        descripcion:
+          type: string
+      required:
+        - nombre
+
+    Error:
+      type: object
+      properties:
+        codigo:
+          type: integer
+        mensaje:
+          type: string
+        detalles:
+          type: string
+      required:
+        - codigo
+        - mensaje
+
+  parameters:
+    NoticiaId:
+      name: noticia-id
+      in: path
+      description: ID de la noticia
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    ComentarioId:
+      name: comentario-id
+      in: path
+      description: ID del comentario
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    UsuarioId:
+      name: usuario-id
+      in: path
+      description: ID del usuario
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    CategoriaId:
+      name: categoria-id
+      in: path
+      description: ID de la categoría
+      required: true
+      schema:
+        type: integer
+        format: int64

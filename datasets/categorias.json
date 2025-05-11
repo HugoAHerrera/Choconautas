@@ -1,0 +1,37 @@
+[
+  {
+    "_id": 1,
+    "nombre": "Astronomía",
+    "descripcion": "Estudio de cuerpos celestes y el universo"
+  },
+  {
+    "_id": 2,
+    "nombre": "Astrofísica",
+    "descripcion": "Física aplicada a fenómenos espaciales"
+  },
+  {
+    "_id": 3,
+    "nombre": "Exploración espacial",
+    "descripcion": "Misiones y avances tecnológicos"
+  },
+  {
+    "_id": 4,
+    "nombre": "Astrobiología",
+    "descripcion": "Estudio de la vida en el universo"
+  },
+  {
+    "_id": 5,
+    "nombre": "Observación astronómica",
+    "descripcion": "Uso de telescopios y satélites"
+  },
+  {
+    "_id": 6,
+    "nombre": "Cosmología",
+    "descripcion": "Origen y evolución del universo"
+  },
+  {
+    "_id": 7,
+    "nombre": "Ingeniería espacial",
+    "descripcion": "Diseño de naves y estaciones"
+  }
+]

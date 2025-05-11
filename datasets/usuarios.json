@@ -1,0 +1,122 @@
+[
+  {
+    "_id": 1,
+    "nombre": "Elena Martínez",
+    "email": "elenamartínez@choconautas.com",
+    "fechaRegistro": "2024-11-13T21:05:21.574323"
+  },
+  {
+    "_id": 2,
+    "nombre": "Carlos Vega",
+    "email": "carlosvega@choconautas.com",
+    "fechaRegistro": "2023-09-24T21:05:21.574323"
+  },
+  {
+    "_id": 3,
+    "nombre": "Lucía Navarro",
+    "email": "lucíanavarro@choconautas.com",
+    "fechaRegistro": "2023-08-12T21:05:21.574323"
+  },
+  {
+    "_id": 4,
+    "nombre": "Martín Ruiz",
+    "email": "martínruiz@choconautas.com",
+    "fechaRegistro": "2023-04-20T21:05:21.574323"
+  },
+  {
+    "_id": 5,
+    "nombre": "Sofía Herrera",
+    "email": "sofíaherrera@choconautas.com",
+    "fechaRegistro": "2024-01-09T21:05:21.574323"
+  },
+  {
+    "_id": 6,
+    "nombre": "Andrés Ibáñez",
+    "email": "andrésibáñez@choconautas.com",
+    "fechaRegistro": "2023-02-03T21:05:21.574323"
+  },
+  {
+    "_id": 7,
+    "nombre": "Valeria Paredes",
+    "email": "valeriaparedes@choconautas.com",
+    "fechaRegistro": "2023-01-01T21:05:21.574323"
+  },
+  {
+    "_id": 8,
+    "nombre": "Hugo Lozano",
+    "email": "hugolozano@choconautas.com",
+    "fechaRegistro": "2023-01-16T21:05:21.574323"
+  },
+  {
+    "_id": 9,
+    "nombre": "Isabela Ríos",
+    "email": "isabelaríos@choconautas.com",
+    "fechaRegistro": "2022-09-17T21:05:21.574323"
+  },
+  {
+    "_id": 10,
+    "nombre": "Javier Fuentes",
+    "email": "javierfuentes@choconautas.com",
+    "fechaRegistro": "2022-12-16T21:05:21.574323"
+  },
+  {
+    "_id": 11,
+    "nombre": "Camila Soto",
+    "email": "camilasoto@choconautas.com",
+    "fechaRegistro": "2023-03-22T21:05:21.574323"
+  },
+  {
+    "_id": 12,
+    "nombre": "Fernando Salas",
+    "email": "fernandosalas@choconautas.com",
+    "fechaRegistro": "2023-01-27T21:05:21.574323"
+  },
+  {
+    "_id": 13,
+    "nombre": "Paula Medina",
+    "email": "paulamedina@choconautas.com",
+    "fechaRegistro": "2024-07-06T21:05:21.574323"
+  },
+  {
+    "_id": 14,
+    "nombre": "Manuel Ortega",
+    "email": "manuelortega@choconautas.com",
+    "fechaRegistro": "2023-07-17T21:05:21.575323"
+  },
+  {
+    "_id": 15,
+    "nombre": "Sara Delgado",
+    "email": "saradelgado@choconautas.com",
+    "fechaRegistro": "2023-05-02T21:05:21.575323"
+  },
+  {
+    "_id": 16,
+    "nombre": "Ignacio Torres",
+    "email": "ignaciotorres@choconautas.com",
+    "fechaRegistro": "2025-01-18T21:05:21.575323"
+  },
+  {
+    "_id": 17,
+    "nombre": "Emma Galván",
+    "email": "emmagalván@choconautas.com",
+    "fechaRegistro": "2022-08-21T21:05:21.575323"
+  },
+  {
+    "_id": 18,
+    "nombre": "Diego Camacho",
+    "email": "diegocamacho@choconautas.com",
+    "fechaRegistro": "2023-02-15T21:05:21.575323"
+  },
+  {
+    "_id": 19,
+    "nombre": "Laura Peña",
+    "email": "laurapeña@choconautas.com",
+    "fechaRegistro": "2022-12-08T21:05:21.575323"
+  },
+  {
+    "_id": 20,
+    "nombre": "Adrián Cordero",
+    "email": "adriáncordero@choconautas.com",
+    "fechaRegistro": "2024-03-09T21:05:21.575323"
+  }
+]

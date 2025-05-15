@@ -9,7 +9,6 @@ const crearComentarioEnNoticia = async (noticiaId, comentarioData) => {
 
     const comentariosCollection = getComentariosCollection();
 
-    // Obtener último _id para sumar 1
     const ultimoComentario = await comentariosCollection
       .find()
       .sort({ _id: -1 })

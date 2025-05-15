@@ -51,7 +51,29 @@ const obtenerNoticias = async (pagina = 1, limite = 10, categoria, fechaInicio, 
   }
 };
 
+const obtenerNoticiasPorFecha = async (fecha) => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+
+    const noticias = await noticiasCollection.find({
+      fecha: { $regex: `^${fecha}` }
+    }).toArray();
+
+    return noticias;
+
+  } catch (error) {
+    throw new Error('Error al obtener noticias por fecha: ' + error.message);
+  }
+};
+
+const obtenerNoticiaPorId = async (id) => {
+  const noticiasCollection = getNoticiasCollection();
+  return await noticiasCollection.findOne({ _id: Number(id) });
+};
+
 module.exports = {
   crearNoticia,
   obtenerNoticias,
+  obtenerNoticiasPorFecha,
+  obtenerNoticiaPorId
 };

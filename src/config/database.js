@@ -32,11 +32,16 @@ const getCategoriasCollection = () => {
   return db.collection("categorias");
 };
 
+const getComentariosCollection = () => {
+  return db.collection("comentarios");
+};
+
 module.exports = {
   connectToDatabase,
   getNoticiasCollection,
   getUsuariosCollection,
   getCategoriasCollection,
+  getComentariosCollection,
   ObjectId,
 };
 

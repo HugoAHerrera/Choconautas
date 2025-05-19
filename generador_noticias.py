@@ -1,3 +1,4 @@
+import requests
 import json
 import random
 from datetime import datetime, timedelta
@@ -14,11 +15,12 @@ usuarios = [
         "Andrés Ibáñez", "Valeria Paredes", "Hugo Lozano", "Isabela Ríos", "Javier Fuentes",
         "Camila Soto", "Fernando Salas", "Paula Medina", "Manuel Ortega", "Sara Delgado",
         "Ignacio Torres", "Emma Galván", "Diego Camacho", "Laura Peña", "Adrián Cordero",
-        "Nicolás Ramírez", "Mariana Castaño", "Tomás Aguirre"
+        "Nicolás Ramírez", "Mariana Castaño", "Tomás Aguirre", "Sally Ride", "Mae Jemison", "Buzz Aldrin", "Chris Hadfield",
+        "Peggy Whitson", "Yuri Gagarin", "Valentina Tereshkova",
     ])
 ]
 
-for usuario in usuarios[-3:]:
+for usuario in usuarios[-7:]:
     usuario["email"] = f"{usuario['nombre'].lower().replace(' ', '')}@nasa.gov"
 
 categorias = [
@@ -79,6 +81,7 @@ comentarios = []
 comentario_id_counter = 1
 fecha_base = datetime.now() - timedelta(days=365)
 
+# Generar primeras 1000 noticias con datos aleatorios y usuarios cualquiera
 for i in range(1, 1001):
     autor = random.choice(usuarios)
     categoria = random.choice(categorias)
@@ -106,6 +109,52 @@ for i in range(1, 1001):
             }
             comentario_id_counter += 1
             comentarios.append(comentario)
+
+# Obtener noticias reales de NASA APOD
+API_KEY = 'DEMO_KEY'  # Pon tu API Key válida aquí
+start_date = '2023-05-01'
+end_date = '2025-05-19'
+
+def fetch_nasa_apod(start, end):
+    url = f'https://api.nasa.gov/planetary/apod?api_key={API_KEY}&start_date={start}&end_date={end}'
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+
+nasa_noticias = fetch_nasa_apod(start_date, end_date)
+
+usuarios_nasa = [u for u in usuarios if u["email"].endswith("@nasa.gov")]
+
+# Generar noticias 1001-1500 con datos reales de NASA APOD y usuarios NASA
+# Generar noticias 1001-1500 con datos reales de NASA APOD y usuarios NASA
+for i in range(1001, 1500):
+    noticia_real = nasa_noticias[(i - 1001) % len(nasa_noticias)]
+    autor = random.choice(usuarios_nasa)
+    categoria = random.choice(categorias)
+
+    noticia = {
+        "_id": i,
+        "titulo": noticia_real.get('title'),
+        "contenido": noticia_real.get('explanation'),
+        "fecha": noticia_real.get('date'),
+        "autorId": autor["_id"],
+        "categoriaId": categoria["_id"]
+    }
+    noticias.append(noticia)
+
+    if random.random() < 0.3:
+        for _ in range(random.randint(1, 3)):
+            comentador = random.choice(usuarios_nasa)
+            comentario = {
+                "_id": comentario_id_counter,
+                "contenido": random.choice(comentarios_posibles),
+                "fecha": noticia_real.get('date'),
+                "autorId": comentador["_id"],
+                "noticiaId": i
+            }
+            comentario_id_counter += 1
+            comentarios.append(comentario)
+
 
 ruta_directorio = "datasets/"
 

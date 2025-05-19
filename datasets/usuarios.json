@@ -118,5 +118,23 @@
     "nombre": "Adrián Cordero",
     "email": "adriáncordero@choconautas.com",
     "fechaRegistro": "2024-03-09T21:05:21.575323"
+  },
+  {
+    "_id": 21,
+    "nombre": "Nicolás Ramírez",
+    "email": "nicolásramírez@nasa.gov",
+    "fechaRegistro": "2022-11-25T19:42:15.580595"
+  },
+  {
+    "_id": 22,
+    "nombre": "Mariana Castaño",
+    "email": "marianacastaño@nasa.gov",
+    "fechaRegistro": "2024-08-29T19:42:15.580595"
+  },
+  {
+    "_id": 23,
+    "nombre": "Tomás Aguirre",
+    "email": "tomásaguirre@nasa.gov",
+    "fechaRegistro": "2023-11-17T19:42:15.580595"
   }
 ]

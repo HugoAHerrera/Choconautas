@@ -13,9 +13,13 @@ usuarios = [
         "Elena Martínez", "Carlos Vega", "Lucía Navarro", "Martín Ruiz", "Sofía Herrera",
         "Andrés Ibáñez", "Valeria Paredes", "Hugo Lozano", "Isabela Ríos", "Javier Fuentes",
         "Camila Soto", "Fernando Salas", "Paula Medina", "Manuel Ortega", "Sara Delgado",
-        "Ignacio Torres", "Emma Galván", "Diego Camacho", "Laura Peña", "Adrián Cordero"
+        "Ignacio Torres", "Emma Galván", "Diego Camacho", "Laura Peña", "Adrián Cordero",
+        "Nicolás Ramírez", "Mariana Castaño", "Tomás Aguirre"
     ])
 ]
+
+for usuario in usuarios[-3:]:
+    usuario["email"] = f"{usuario['nombre'].lower().replace(' ', '')}@nasa.gov"
 
 categorias = [
     {"_id": 1, "nombre": "Astronomía", "descripcion": "Estudio de cuerpos celestes y el universo"},

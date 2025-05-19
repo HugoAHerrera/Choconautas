@@ -1,0 +1,45 @@
+const categoriaService = require('../services/categoria_service');
+
+// POST /categoria
+const crearCategoria = async (req, res) => {
+  try {
+    const { nombre, descripcion } = req.body;
+
+    if (!nombre || !descripcion) {
+      return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    }
+
+    const nuevaCategoria = await categoriaService.crearCategoria({ nombre, descripcion });
+    res.status(201).json(nuevaCategoria);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear la categoria', error: error.message });
+  }
+};
+
+// GET /categoria
+const obtenerTodasCategorias = async (req, res) => {
+    try {
+     const categorias = await categoriaService.obtenerCategorias();
+      res.status(200).json(categorias);
+    } catch (error) {
+      res.status(500).json({ message: 'Error obteniendo la lista de categorias', error: error.message });
+    }
+  };
+
+// GET /categoria/{categoria-id}
+const obtenerCategoriaConId = async (req, res) => {
+  try {
+    const categoriaId = req.params['categoria-id'];
+
+    const noticias = await categoriaService.obtenerCategoriaPorId(categoriaId);
+    res.status(200).json(noticias);
+  } catch (error) {
+    res.status(500).json({ message: 'Error obteniendo publicaciones del usuario', error: error.message });
+  }
+};
+
+module.exports = {
+  crearCategoria,
+  obtenerTodasCategorias,
+  obtenerCategoriaConId,
+};

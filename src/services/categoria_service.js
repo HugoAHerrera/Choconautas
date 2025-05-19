@@ -6,7 +6,7 @@ const crearCategoria = async (datos) => {
     const resultado = await categoriasCollection.insertOne(datos);
     return { _id: resultado.insertedId, ...datos };
   } catch (error) {
-    throw new Error('Error al crear el usuario: ' + error.message);
+    throw new Error('Error al crear la categoria: ' + error.message);
   }
 };
 

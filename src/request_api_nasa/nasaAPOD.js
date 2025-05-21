@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const API_KEY = 'DEMO_KEY'; // Pon tu API key aquí
-const startDate = '2023-05-01'; // Fecha de inicio (AAAA-MM-DD)
+const startDate = '2025-05-05'; // Fecha de inicio (AAAA-MM-DD)
 const endDate = '2025-05-19';   // Fecha final (AAAA-MM-DD)
 
 function addDays(date, days) {
@@ -20,46 +20,35 @@ async function fetchNoticias(start, end) {
   return response.data;
 }
 
-async function obtenerNoticiasEnBloques(startDate, endDate) {
-  let start = new Date(startDate);
-  let end = new Date(endDate);
-  const noticiasTotales = [];
 
-  while (start <= end) {
-    let bloqueEnd = addDays(start, 9);
-    if (bloqueEnd > end) bloqueEnd = end;
-
-    const noticias = await fetchNoticias(formatDate(start), formatDate(bloqueEnd));
-    noticiasTotales.push(...noticias);
-
-    start = addDays(bloqueEnd, 1);
-  }
-
-  return noticiasTotales;
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-(async () => {
-  try {
-    const noticias = await obtenerNoticiasEnBloques(startDate, endDate);
+async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
+  let start = new Date(startDate);
+  let end = new Date(endDate);
+  const noticiasTotales = [];
 
-    console.log("📰 NOTICIAS NASA - ASTRONOMY PICTURES OF THE DAY");
-    console.log("==============================================");
+  while (start <= end) {
+    let bloqueEnd = addDays(start, 9);
+    if (bloqueEnd > end) bloqueEnd = end;
 
-    noticias.forEach((noticia, index) => {
-      console.log(`\n🔢 Noticia #${index + 1}`);
-      console.log(`📅 Fecha: ${noticia.date}`);
-      console.log(`🧠 Título: ${noticia.title}`);
-      console.log(`📝 Explicación:\n${noticia.explanation}`);
-      console.log(`🎬 Tipo media: ${noticia.media_type}`);
-      console.log(`🔗 URL: ${noticia.url}`);
-      if (noticia.hdurl) console.log(`🔗 URL HD: ${noticia.hdurl}`);
-      console.log("==============================================");
-    });
-  } catch (error) {
-    if (error.response && error.response.status === 403) {
-      console.error("❌ Error 403: Clave API inválida o límite superado.");
-    } else {
-      console.error("Error al obtener las noticias APOD:", error.message);
-    }
-  }
-})();
+    try {
+      const noticias = await fetchNoticias(formatDate(start), formatDate(bloqueEnd));
+      noticiasTotales.push(...noticias);
+    } catch (error) {
+      console.error(`❌ Error al obtener noticias del ${formatDate(start)} al ${formatDate(bloqueEnd)}:`, error.message);
+    }
+
+    start = addDays(bloqueEnd, 1);
+    await delay(1000); // Espera 1 segundo entre bloques
+  }
+
+  return noticiasTotales;
+}
+
+
+module.exports = {
+  obtenerNoticiasEnBloquesNASA
+};

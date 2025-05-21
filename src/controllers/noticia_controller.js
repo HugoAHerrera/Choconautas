@@ -1,7 +1,18 @@
 const noticiaService = require('../services/noticia_service');
 const comentarioService = require('../services/comentario_service');
+const { obtenerNoticiasEnBloquesNASA } = require('../request_api_nasa/nasaAPOD');
 
 const crearNoticia = async (req, res) => {
+  try {
+    const noticiaData = req.body;
+    const noticia = await noticiaService.crearNoticia(noticiaData);
+    res.status(201).json(noticia);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear la noticia', error: error.message });
+  }
+};
+
+const crearNoticiaNasa = async (req, res) => {
   try {
     const noticiaData = req.body;
     const noticia = await noticiaService.crearNoticia(noticiaData);
@@ -21,35 +32,18 @@ const obtenerNoticias = async (req, res) => {
   }
 };
 
+
 const obtenerNoticiasNasa = async (req, res) => {
   try {
-    const { fecha } = req.query;
-
-    // Validar formato de fecha si se proporciona
-    if (fecha && isNaN(Date.parse(fecha))) {
-      return res.status(400).json({ message: 'Fecha inválida' });
-    }
-
-    // Obtener todas las noticias con autor poblado
-    const noticias = await Noticia.find().populate('autorId');
-
-    // Filtrar noticias escritas por usuarios con email @nasa.gov
-    let noticiasNasa = noticias.filter(
-      (noticia) => noticia.autorId?.email?.endsWith('@nasa.gov')
-    );
-
-    // Si se proporciona una fecha, filtrar por ella también
-    if (fecha) {
-      noticiasNasa = noticiasNasa.filter((n) => n.fecha.startsWith(fecha));
-    }
-
-    if (!noticiasNasa.length) {
-      return res.status(404).json({ message: 'No hay noticias de usuarios NASA para los criterios dados' });
-    }
-
-    res.status(200).json(noticiasNasa);
+    const { start = '2025-05-01', end = '2025-05-05' } = req.query;
+    const noticias = await obtenerNoticiasEnBloquesNASA(start, end);
+    res.status(200).json(noticias);
   } catch (error) {
-    res.status(500).json({ message: 'Error obteniendo noticias de NASA', error: error.message });
+    if (error.response && error.response.status === 403) {
+      res.status(403).json({ error: 'Clave API inválida o límite superado.' });
+    } else {
+      res.status(500).json({ error: 'Error al obtener las noticias APOD.', detalle: error.message });
+    }
   }
 };
 
@@ -152,6 +146,7 @@ const borrarComentariosDeNoticia = async (req, res) => {
 
 module.exports = {
   crearNoticia,
+  crearNoticiaNasa,
   obtenerNoticias,
   obtenerNoticiasNasa,
   obtenerNoticiasPorFecha,

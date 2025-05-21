@@ -1,6 +1,6 @@
 const noticiaService = require('../services/noticia_service');
 const comentarioService = require('../services/comentario_service');
-const { obtenerNoticiasEnBloquesNASA } = require('../request_api_nasa/nasaAPOD');
+const { fetchNoticias, obtenerNoticiasEnBloquesNASA } = require('../request_api_nasa/nasaAPOD');
 
 const crearNoticia = async (req, res) => {
   try {
@@ -67,32 +67,24 @@ const obtenerNoticiasPorFecha = async (req, res) => {
   }
 };
 
+
 const obtenerNoticiasNasaPorFecha = async (req, res) => {
-  try {
-    const { fecha } = req.params;
+  try {
+    const { fecha } = req.params; // <-- CAMBIO AQUÍ
 
-    // Validar la fecha
-    if (isNaN(Date.parse(fecha))) {
-      return res.status(400).json({ message: 'Fecha inválida' });
-    }
+    if (!fecha) {
+      return res.status(400).json({ error: 'Debes proporcionar una fecha en el parámetro "fecha".' });
+    }
 
-    // Obtener todas las noticias con autor poblado
-    const noticias = await Noticia.find({ fecha: { $regex: `^${fecha}` } }).populate('autorId');
-
-    // Filtrar noticias de usuarios con correo @nasa.gov
-    const noticiasNasa = noticias.filter(
-      (noticia) => noticia.autorId?.email?.endsWith('@nasa.gov')
-    );
-
-    if (!noticiasNasa.length) {
-      return res.status(404).json({ message: 'No hay noticias de usuarios NASA para esa fecha' });
-    }
-
-    res.status(200).json(noticiasNasa);
-  } catch (error) {
-    res.status(500).json({ message: 'Error obteniendo noticias NASA por fecha', error: error.message });
-  }
+    const noticias = await fetchNoticias(fecha, fecha); // misma fecha como inicio y fin
+    res.status(200).json(noticias[0]); // solo una noticia
+  } catch (error) {
+    console.error("Error en obtenerNoticiasNasaPorFecha:", error.message);
+    res.status(500).json({ error: 'Error al obtener la noticia APOD.', detalle: error.message });
+  }
 };
+
+
 
 const obtenerComentariosDeNoticia = async (req, res) => {
   try {

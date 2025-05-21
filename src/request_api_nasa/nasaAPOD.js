@@ -50,5 +50,6 @@ async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
 
 
 module.exports = {
+  fetchNoticias,
   obtenerNoticiasEnBloquesNASA
 };

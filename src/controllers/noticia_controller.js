@@ -35,7 +35,7 @@ const obtenerNoticias = async (req, res) => {
 
 const obtenerNoticiasNasa = async (req, res) => {
   try {
-    const { start = '2025-05-01', end = '2025-05-05' } = req.query;
+    const { start = '2025-05-01', end = '2025-05-03' } = req.query;
     const noticias = await obtenerNoticiasEnBloquesNASA(start, end);
     res.status(200).json(noticias);
   } catch (error) {

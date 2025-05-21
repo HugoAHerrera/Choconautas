@@ -59,6 +59,7 @@ async function obtenerNoticiasNasa(req, res) {
       const min = 20;
       const max = 30;
 
+      // Por autor id ya que del 20 al 30 son de la NASA
       const noticias = await noticiaService.obtenerNoticiasPorRangoAutorId(min, max);
 
       if (!noticias.length) {
@@ -67,7 +68,7 @@ async function obtenerNoticiasNasa(req, res) {
 
       res.status(200).json(noticias);
     } catch (error) {
-    res.status(500).json({ message: 'Error obteniendo noticias', error: error.message });
+        res.status(503).json({ message: 'Servicio no disponible', error: error.message });
   }
     res.end();
   }
@@ -94,19 +95,23 @@ const obtenerNoticiasPorFecha = async (req, res) => {
 
 
 const obtenerNoticiasNasaPorFecha = async (req, res) => {
-  try {
-    const { fecha } = req.params;
+ try {
+   const { fecha } = req.params;
 
-    if (!fecha) {
-      return res.status(400).json({ error: 'Debes proporcionar una fecha en el parámetro "fecha".' });
-    }
+   if (!fecha) {
+     return res.status(400).json({ error: 'Debes proporcionar una fecha en el parámetro "fecha".' });
+    }
 
-    const noticias = await fetchNoticias(fecha, fecha); // misma fecha como inicio y fin
-    res.status(200).json(noticias); // solo una noticia
-  } catch (error) {
+    const noticias = await fetchNoticias(fecha, fecha); // misma fecha como inicio y fin
+    res.status(200).json(noticias); // solo una noticia
+  } catch (error) {
     const noticiasSinApi = await fetchNoticiasNASASinAPI(fecha,fecha);
     res.status(200).json(noticiasSinApi);
-  }
+    res.status(400).json({ message: 'Error, fecha invalida', error: error.message });
+    res.status(404).json({ message: 'No hay noticias para esa fecha', error: error.message });
+    res.status(503).json({ message: 'Servicio no disponible', error: error.message });
+
+ }
 };
 
 const obtenerNoticiaPorId = async (req, res) => {

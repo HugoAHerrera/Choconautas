@@ -33,19 +33,44 @@ const obtenerNoticias = async (req, res) => {
 };
 
 
-const obtenerNoticiasNasa = async (req, res) => {
+async function obtenerNoticiasNasa(req, res) {
+  const { start = '2025-04-01', end = '2025-05-06' } = req.query;
+  const noticiasPorPagina = 3;
+
   try {
-    const { start = '2025-05-01', end = '2025-05-03' } = req.query;
-    const noticias = await obtenerNoticiasEnBloquesNASA(start, end);
-    res.status(200).json(noticias);
+    const todasLasNoticias = await obtenerNoticiasEnBloquesNASA(start, end);
+
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    });
+
+    let pagina = 0;
+
+    const enviarNoticias = () => {
+      const startIndex = pagina * noticiasPorPagina;
+      const noticiasPaginadas = todasLasNoticias.slice(startIndex, startIndex + noticiasPorPagina);
+
+      if (noticiasPaginadas.length === 0) {
+        res.write(`event: end\ndata: No hay más noticias.\n\n`);
+        return res.end();
+      }
+
+      res.write(`data: ${JSON.stringify(noticiasPaginadas)}\n\n`);
+      pagina++;
+      setTimeout(enviarNoticias, 18000); // 3 minutos
+    };
+
+    enviarNoticias();
+
   } catch (error) {
-    if (error.response && error.response.status === 403) {
-      res.status(403).json({ error: 'Clave API inválida o límite superado.' });
-    } else {
-      res.status(500).json({ error: 'Error al obtener las noticias APOD.', detalle: error.message });
-    }
+    res.write(`event: error\ndata: ${JSON.stringify({ error: error.message })}\n\n`);
+    res.end();
   }
-};
+}
+
+
 
 
 const obtenerNoticiasPorFecha = async (req, res) => {

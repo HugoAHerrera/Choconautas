@@ -84,6 +84,20 @@ const obtenerNoticiasNasaPorFecha = async (req, res) => {
   }
 };
 
+const obtenerNoticiaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const noticia = await noticiaService.obtenerNoticiaPorId(id);
+
+    if (!noticia) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    res.status(200).json(noticia);
+  } catch (error) {
+    res.status(500).json({ message: 'Error obteniendo la noticia', error: error.message });
+  }
+};
 
 
 const obtenerComentariosDeNoticia = async (req, res) => {
@@ -107,6 +121,25 @@ const obtenerComentariosDeNoticia = async (req, res) => {
   }
 };
 
+const obtenerComentarioPorId = async (req, res) => {
+  try {
+    const { noticiaId, comentarioId } = req.params;
+
+    const noticia = await noticiaService.obtenerNoticiaPorId(noticiaId);
+    if (!noticia) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    const comentario = await comentarioService.obtenerComentarioPorId(noticiaId, comentarioId);
+    if (!comentario) {
+      return res.status(404).json({ message: 'Comentario no encontrado' });
+    }
+
+    res.status(200).json(comentario);
+  } catch (error) {
+    res.status(500).json({ message: 'Error obteniendo comentario', error: error.message });
+  }
+};
 
 const crearComentarioEnNoticia = async (req, res) => {
   try {
@@ -142,8 +175,10 @@ module.exports = {
   obtenerNoticias,
   obtenerNoticiasNasa,
   obtenerNoticiasPorFecha,
-  obtenerNoticiasNasaPorFecha ,
+  obtenerNoticiasNasaPorFecha,
+  obtenerNoticiaPorId,
   obtenerComentariosDeNoticia,
+  obtenerComentarioPorId,
   crearComentarioEnNoticia,
   borrarComentariosDeNoticia
 };

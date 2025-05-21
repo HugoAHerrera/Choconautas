@@ -62,8 +62,24 @@ const obtenerComentariosDeNoticia = async (noticiaId) => {
   }
 };
 
+const obtenerComentarioPorId = async (noticiaId, comentarioId) => {
+  try {
+    const comentariosCollection = getComentariosCollection();
+
+    const comentario = await comentariosCollection.findOne({
+      noticiaId: Number(noticiaId),
+      _id: Number(comentarioId)
+    });
+
+    return comentario;
+  } catch (error) {
+    throw new Error('Error al obtener comentario: ' + error.message);
+  }
+};
+
 module.exports = {
   obtenerComentariosDeNoticia,
   crearComentarioEnNoticia,
-  borrarComentariosDeNoticia
+  borrarComentariosDeNoticia,
+  obtenerComentarioPorId
 };

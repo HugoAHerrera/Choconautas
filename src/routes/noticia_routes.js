@@ -14,7 +14,11 @@ router.get('/noticias/fecha/:fecha', noticiaController.obtenerNoticiasPorFecha);
 
 router.get('/noticias/nasa/fecha/:fecha', noticiaController.obtenerNoticiasNasaPorFecha);
 
+router.get('/noticias/id/:id', noticiaController.obtenerNoticiaPorId);
+
 router.get('/noticias/:noticiaId/comentarios', noticiaController.obtenerComentariosDeNoticia);
+
+router.get('/noticias/:noticiaId/comentarios/:comentarioId', noticiaController.obtenerComentarioPorId);
 
 router.post('/noticias/:noticiaId/comentarios', noticiaController.crearComentarioEnNoticia);
 

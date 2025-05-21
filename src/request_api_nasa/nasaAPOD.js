@@ -29,11 +29,27 @@ function getRandomInt(min, max) {
 }
 
 // Fetch a la API
+
+function getRandomInt(min, max) {
+  // Devuelve un entero aleatorio entre min y max, ambos incluidos
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 async function fetchNoticias(start, end) {
   const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&start_date=${start}&end_date=${end}`;
   const response = await axios.get(url);
-  return response.data;
+
+  const noticias = response.data.map(item => ({
+    titulo: item.title,
+    contenido: item.explanation,
+    fecha: item.date,
+    autorId: getRandomInt(20, 30),
+    categoriaId: getRandomInt(1, 7),
+  }));
+
+  return noticias;
 }
+
 
 // Función principal
 async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {

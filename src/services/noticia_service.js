@@ -86,9 +86,27 @@ const obtenerNoticiasPorRangoAutorId = async (min, max) => {
   }
 };
 
+const fetchNoticiasNASASinAPI = async (fecha) => {
+  try {
+  const noticiasCollection = getNoticiasCollection();
+
+  const noticias = await noticiasCollection.find({
+    fecha: { $regex: `^${fecha}` },
+    autorId: { $gte: 20, $lte: 30 }
+  }).toArray();
+
+  return noticias;
+
+} catch (error) {
+  throw new Error('Error al obtener noticias por fecha y autorId: ' + error.message);
+}
+};
+
+
 module.exports = {
   crearNoticia,
   obtenerNoticias,
+  fetchNoticiasNASASinAPI,
   obtenerNoticiasPorFecha,
   obtenerNoticiaPorId,
   obtenerNoticiasPorRangoAutorId

@@ -102,10 +102,10 @@ const obtenerNoticiasNasaPorFecha = async (req, res) => {
     }
 
     const noticias = await fetchNoticias(fecha, fecha); // misma fecha como inicio y fin
-    res.status(200).json(noticias[0]); // solo una noticia
+    res.status(200).json(noticias); // solo una noticia
   } catch (error) {
-    console.error("Error en obtenerNoticiasNasaPorFecha:", error.message);
-    res.status(500).json({ error: 'Error al obtener la noticia APOD.', detalle: error.message });
+    const noticiasSinApi = await fetchNoticiasNASASinAPI(fecha,fecha);
+    res.status(200).json(noticiasSinApi);
   }
 };
 

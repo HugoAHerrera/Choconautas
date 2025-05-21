@@ -12,16 +12,6 @@ const crearNoticia = async (req, res) => {
   }
 };
 
-const crearNoticiaNasa = async (req, res) => {
-  try {
-    const noticiaData = req.body;
-    const noticia = await noticiaService.crearNoticia(noticiaData);
-    res.status(201).json(noticia);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al crear la noticia', error: error.message });
-  }
-};
-
 const obtenerNoticias = async (req, res) => {
   try {
     const { pagina = 1, limite = 10, categoria, fechaInicio, fechaFin } = req.query;
@@ -31,8 +21,6 @@ const obtenerNoticias = async (req, res) => {
     res.status(500).json({ message: 'Error obteniendo las noticias', error: error.message });
   }
 };
-
-
 async function obtenerNoticiasNasa(req, res) {
   const { start = '2025-04-01', end = '2025-05-06' } = req.query;
   const noticiasPorPagina = 3;
@@ -59,19 +47,31 @@ async function obtenerNoticiasNasa(req, res) {
 
       res.write(`data: ${JSON.stringify(noticiasPaginadas)}\n\n`);
       pagina++;
-      setTimeout(enviarNoticias, 18000); // 3 minutos
+
+      setTimeout(enviarNoticias, 120000); // 2 minutos
     };
 
     enviarNoticias();
 
   } catch (error) {
-    res.write(`event: error\ndata: ${JSON.stringify({ error: error.message })}\n\n`);
+    // Detectar si el error proviene de Axios o similar
+    try {
+      const min = 20;
+      const max = 30;
+
+      const noticias = await noticiaService.obtenerNoticiasPorRangoAutorId(min, max);
+
+      if (!noticias.length) {
+        return res.status(404).json({ message: 'No hay noticias con autorId entre 20 y 30' });
+      }
+
+      res.status(200).json(noticias);
+    } catch (error) {
+    res.status(500).json({ message: 'Error obteniendo noticias', error: error.message });
+  }
     res.end();
   }
 }
-
-
-
 
 const obtenerNoticiasPorFecha = async (req, res) => {
   try {
@@ -95,7 +95,7 @@ const obtenerNoticiasPorFecha = async (req, res) => {
 
 const obtenerNoticiasNasaPorFecha = async (req, res) => {
   try {
-    const { fecha } = req.params; // <-- CAMBIO AQUÍ
+    const { fecha } = req.params;
 
     if (!fecha) {
       return res.status(400).json({ error: 'Debes proporcionar una fecha en el parámetro "fecha".' });
@@ -196,7 +196,6 @@ const borrarComentariosDeNoticia = async (req, res) => {
 
 module.exports = {
   crearNoticia,
-  crearNoticiaNasa,
   obtenerNoticias,
   obtenerNoticiasNasa,
   obtenerNoticiasPorFecha,

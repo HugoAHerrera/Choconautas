@@ -71,9 +71,25 @@ const obtenerNoticiaPorId = async (id) => {
   return await noticiasCollection.findOne({ _id: Number(id) });
 };
 
+const obtenerNoticiasPorRangoAutorId = async (min, max) => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+
+    const noticias = await noticiasCollection.find({
+      autorId: { $gte: min, $lte: max }
+    }).toArray();
+
+    return noticias;
+
+  } catch (error) {
+    throw new Error('Error al obtener noticias por rango de autorId: ' + error.message);
+  }
+};
+
 module.exports = {
   crearNoticia,
   obtenerNoticias,
   obtenerNoticiasPorFecha,
-  obtenerNoticiaPorId
+  obtenerNoticiaPorId,
+  obtenerNoticiasPorRangoAutorId
 };

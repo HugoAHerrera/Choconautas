@@ -6,8 +6,6 @@ router.post('/noticias', noticiaController.crearNoticia);
 
 router.get('/noticias', noticiaController.obtenerNoticias);
 
-router.post('/noticias/nasa', noticiaController.crearNoticiaNasa);
-
 router.get('/noticias/nasa', noticiaController.obtenerNoticiasNasa);
 
 router.get('/noticias/fecha/:fecha', noticiaController.obtenerNoticiasPorFecha);

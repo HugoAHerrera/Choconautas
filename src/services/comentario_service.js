@@ -1,32 +1,24 @@
-const { getComentariosCollection, ObjectId, getNoticiasCollection } = require('../config/database');
+const { getComentariosCollection, getNoticiasCollection } = require('../config/database');
 
 const crearComentarioEnNoticia = async (noticiaId, comentarioData) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    const noticia = await noticiasCollection.findOne({ _id: Number(noticiaId) });
+    const noticia = await noticiasCollection.findOne({ _id: noticiaId });
 
     if (!noticia) throw new Error('Noticia no encontrada');
 
     const comentariosCollection = getComentariosCollection();
 
-    const ultimoComentario = await comentariosCollection
-      .find()
-      .sort({ _id: -1 })
-      .limit(1)
-      .toArray();
-
-    const nuevoId = ultimoComentario.length ? ultimoComentario[0]._id + 1 : 1;
-
     const comentario = {
-      _id: nuevoId,
-      noticiaId: Number(noticiaId),
+      noticiaId: noticiaId,
       autor: comentarioData.autor,
       contenido: comentarioData.contenido,
       fecha: new Date()
     };
 
     const result = await comentariosCollection.insertOne(comentario);
-    return result.ops[0];
+    return { _id: result.insertedId, ...comentario };
+
   } catch (error) {
     throw new Error('Error al crear comentario: ' + error.message);
   }
@@ -35,12 +27,12 @@ const crearComentarioEnNoticia = async (noticiaId, comentarioData) => {
 const borrarComentariosDeNoticia = async (noticiaId) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    const noticia = await noticiasCollection.findOne({ _id: Number(noticiaId) });
+    const noticia = await noticiasCollection.findOne({ _id: noticiaId });
 
     if (!noticia) return false;
 
     const comentariosCollection = getComentariosCollection();
-    await comentariosCollection.deleteMany({ noticiaId: Number(noticiaId) });
+    await comentariosCollection.deleteMany({ noticiaId: noticiaId });
     return true;
   } catch (error) {
     throw new Error('Error al borrar comentarios: ' + error.message);
@@ -51,10 +43,7 @@ const obtenerComentariosDeNoticia = async (noticiaId) => {
   try {
     const comentariosCollection = getComentariosCollection();
 
-    const comentarios = await comentariosCollection.find({
-      noticiaId: Number(noticiaId)
-    }).toArray();
-
+    const comentarios = await comentariosCollection.find({ noticiaId: noticiaId }).toArray();
     return comentarios;
 
   } catch (error) {
@@ -67,8 +56,8 @@ const obtenerComentarioPorId = async (noticiaId, comentarioId) => {
     const comentariosCollection = getComentariosCollection();
 
     const comentario = await comentariosCollection.findOne({
-      noticiaId: Number(noticiaId),
-      _id: Number(comentarioId)
+      noticiaId: noticiaId,
+      _id: comentarioId
     });
 
     return comentario;
@@ -83,13 +72,13 @@ const actualizarComentario = async (noticiaId, comentarioId, nuevosDatos) => {
 
     const resultado = await comentariosCollection.findOneAndUpdate(
       {
-        noticiaId: Number(noticiaId),
-        _id: Number(comentarioId)
+        noticiaId: noticiaId,
+        _id: comentarioId
       },
       {
         $set: {
           contenido: nuevosDatos.contenido,
-          autorId: Number(nuevosDatos.autorId),
+          autorId: nuevosDatos.autorId,
           fecha: new Date()
         }
       },
@@ -107,8 +96,8 @@ const borrarComentarioPorId = async (noticiaId, comentarioId) => {
     const comentariosCollection = getComentariosCollection();
 
     const resultado = await comentariosCollection.deleteOne({
-      noticiaId: Number(noticiaId),
-      _id: Number(comentarioId)
+      noticiaId: noticiaId,
+      _id: comentarioId
     });
 
     return resultado.deletedCount > 0;

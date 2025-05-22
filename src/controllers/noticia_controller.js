@@ -209,13 +209,20 @@ const crearComentarioEnNoticia = async (req, res) => {
   try {
     const { noticiaId } = req.params;
     const comentarioData = req.body;
-    const comentario = await comentarioService.crearComentarioEnNoticia(noticiaId, comentarioData);
 
+    const { ObjectId } = require('mongodb');
+    if (!ObjectId.isValid(noticiaId)) {
+      return res.status(400).json({ message: 'ID de noticia inválido' });
+    }
+
+    const comentario = await comentarioService.crearComentarioEnNoticia(noticiaId, comentarioData);
     res.status(201).json(comentario);
   } catch (error) {
     res.status(500).json({ message: 'Error creando comentario', error: error.message });
   }
 };
+
+
 
 const borrarComentariosDeNoticia = async (req, res) => {
   try {

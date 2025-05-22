@@ -3,9 +3,10 @@ const { getNoticiasCollection, ObjectId, getUsuariosCollection, getCategoriasCol
 const crearNoticia = async (noticiaData) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    
-    const usuario = await getUsuariosCollection().findOne({ _id: ObjectId(noticiaData.autorId) });
-    const categoria = await getCategoriasCollection().findOne({ _id: ObjectId(noticiaData.categoriaId) });
+
+    const usuario = await getUsuariosCollection().findOne({ _id: noticiaData.autorId });
+    const categoria = await getCategoriasCollection().findOne({ _id: noticiaData.categoriaId });
+
 
     if (!usuario || !categoria) {
       throw new Error('Usuario o categoría no encontrados');
@@ -15,12 +16,13 @@ const crearNoticia = async (noticiaData) => {
       titulo: noticiaData.titulo,
       contenido: noticiaData.contenido,
       fecha: new Date(),
-      autorId: ObjectId(noticiaData.autorId),
-      categoriaId: ObjectId(noticiaData.categoriaId),
+      autorId: noticiaData.autorId,
+      categoriaId: noticiaData.categoriaId,
     };
 
     const result = await noticiasCollection.insertOne(noticia);
-    return result.ops[0];
+    const noticiaCreada = await noticiasCollection.findOne({ _id: result.insertedId });
+    return noticiaCreada;
 
   } catch (error) {
     throw new Error('Error al crear la noticia: ' + error.message);
@@ -68,14 +70,14 @@ const obtenerNoticiasPorFecha = async (fecha) => {
 
 const obtenerNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
-  return await noticiasCollection.findOne({ _id: Number(id) });
+  return await noticiasCollection.findOne({ _id: id });
 };
 
 const actualizarNoticiaPorId = async (id, nuevosDatos) => {
   const noticiasCollection = getNoticiasCollection();
 
   const resultado = await noticiasCollection.findOneAndUpdate(
-    { _id: Number(id) },
+    { _id: new ObjectId(id) },
     { $set: nuevosDatos },
     { returnDocument: 'after' }
   );
@@ -86,7 +88,7 @@ const actualizarNoticiaPorId = async (id, nuevosDatos) => {
 const borrarNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
 
-  const resultado = await noticiasCollection.deleteOne({ _id: Number(id) });
+  const resultado = await noticiasCollection.deleteOne({ _id: new ObjectId(id) });
 
   return resultado.deletedCount > 0;
 };

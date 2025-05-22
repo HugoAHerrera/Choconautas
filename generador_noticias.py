@@ -1,36 +1,36 @@
-import requests
 import json
 import random
 from datetime import datetime, timedelta
+from bson import ObjectId
 
 usuarios = [
     {
-        "_id": i + 1,
+        "_id": ObjectId(),
         "nombre": nombre,
         "email": f"{nombre.lower().replace(' ', '')}@choconautas.com",
         "fechaRegistro": (datetime.now() - timedelta(days=random.randint(100, 1000))).isoformat()
     }
-    for i, nombre in enumerate([
+    for nombre in [
         "Elena Martínez", "Carlos Vega", "Lucía Navarro", "Martín Ruiz", "Sofía Herrera",
         "Andrés Ibáñez", "Valeria Paredes", "Hugo Lozano", "Isabela Ríos", "Javier Fuentes",
         "Camila Soto", "Fernando Salas", "Paula Medina", "Manuel Ortega", "Sara Delgado",
         "Ignacio Torres", "Emma Galván", "Diego Camacho", "Laura Peña", "Adrián Cordero",
-        "Nicolás Ramírez", "Mariana Castaño", "Tomás Aguirre", "Sally Ride", "Mae Jemison", "Buzz Aldrin", "Chris Hadfield",
-        "Peggy Whitson", "Yuri Gagarin", "Valentina Tereshkova",
-    ])
+        "Nicolás Ramírez", "Mariana Castaño", "Tomás Aguirre", "Sally Ride", "Mae Jemison",
+        "Buzz Aldrin", "Chris Hadfield", "Peggy Whitson", "Yuri Gagarin", "Valentina Tereshkova",
+    ]
 ]
 
 for usuario in usuarios[-7:]:
     usuario["email"] = f"{usuario['nombre'].lower().replace(' ', '')}@nasa.gov"
 
 categorias = [
-    {"_id": 1, "nombre": "Astronomía", "descripcion": "Estudio de cuerpos celestes y el universo"},
-    {"_id": 2, "nombre": "Astrofísica", "descripcion": "Física aplicada a fenómenos espaciales"},
-    {"_id": 3, "nombre": "Exploración espacial", "descripcion": "Misiones y avances tecnológicos"},
-    {"_id": 4, "nombre": "Astrobiología", "descripcion": "Estudio de la vida en el universo"},
-    {"_id": 5, "nombre": "Observación astronómica", "descripcion": "Uso de telescopios y satélites"},
-    {"_id": 6, "nombre": "Cosmología", "descripcion": "Origen y evolución del universo"},
-    {"_id": 7, "nombre": "Ingeniería espacial", "descripcion": "Diseño de naves y estaciones"}
+    {"_id": ObjectId(), "nombre": "Astronomía", "descripcion": "Estudio de cuerpos celestes y el universo"},
+    {"_id": ObjectId(), "nombre": "Astrofísica", "descripcion": "Física aplicada a fenómenos espaciales"},
+    {"_id": ObjectId(), "nombre": "Exploración espacial", "descripcion": "Misiones y avances tecnológicos"},
+    {"_id": ObjectId(), "nombre": "Astrobiología", "descripcion": "Estudio de la vida en el universo"},
+    {"_id": ObjectId(), "nombre": "Observación astronómica", "descripcion": "Uso de telescopios y satélites"},
+    {"_id": ObjectId(), "nombre": "Cosmología", "descripcion": "Origen y evolución del universo"},
+    {"_id": ObjectId(), "nombre": "Ingeniería espacial", "descripcion": "Diseño de naves y estaciones"}
 ]
 
 titulos = [
@@ -78,21 +78,21 @@ comentarios_posibles = [
 
 noticias = []
 comentarios = []
-comentario_id_counter = 1
 fecha_base = datetime.now() - timedelta(days=365)
 
-# Generar primeras 1000 noticias con datos aleatorios y usuarios cualquiera
-for i in range(1, 1001):
-    autor = random.choice(list(range(1, 21)) )
+# Generar noticias
+for _ in range(1000):
+    autor = random.choice(usuarios)
     categoria = random.choice(categorias)
     fecha_noticia = (fecha_base + timedelta(days=random.randint(0, 365))).isoformat()
 
+    noticia_id = ObjectId()
     noticia = {
-        "_id": i,
+        "_id": noticia_id,
         "titulo": random.choice(titulos),
         "contenido": random.choice(contenidos),
         "fecha": fecha_noticia,
-        "autorId": autor,
+        "autorId": autor["_id"],
         "categoriaId": categoria["_id"]
     }
     noticias.append(noticia)
@@ -101,27 +101,36 @@ for i in range(1, 1001):
         for _ in range(random.randint(1, 3)):
             comentador = random.choice(usuarios)
             comentario = {
-                "_id": comentario_id_counter,
+                "_id": ObjectId(),
                 "contenido": random.choice(comentarios_posibles),
                 "fecha": (fecha_base + timedelta(days=random.randint(0, 365))).isoformat(),
                 "autorId": comentador["_id"],
-                "noticiaId": i
+                "noticiaId": noticia_id
             }
-            comentario_id_counter += 1
             comentarios.append(comentario)
-
-
-
+            
 ruta_directorio = "datasets/"
 
+def json_serial(obj):
+    try:
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+    except Exception as e:
+        print("Error serializando:", obj, type(obj))
+        raise e
+    raise TypeError(f"Type not serializable: {type(obj)}")
+
+
 with open(ruta_directorio + "usuarios.json", "w", encoding="utf-8") as f:
-    json.dump(usuarios, f, ensure_ascii=False, indent=2)
+    json.dump(usuarios, f, ensure_ascii=False, indent=2, default=json_serial)
 
 with open(ruta_directorio + "categorias.json", "w", encoding="utf-8") as f:
-    json.dump(categorias, f, ensure_ascii=False, indent=2)
+    json.dump(categorias, f, ensure_ascii=False, indent=2, default=json_serial)
 
 with open(ruta_directorio + "noticias.json", "w", encoding="utf-8") as f:
-    json.dump(noticias, f, ensure_ascii=False, indent=2)
+    json.dump(noticias, f, ensure_ascii=False, indent=2, default=json_serial)
 
 with open(ruta_directorio + "comentarios.json", "w", encoding="utf-8") as f:
-    json.dump(comentarios, f, ensure_ascii=False, indent=2)
+    json.dump(comentarios, f, ensure_ascii=False, indent=2, default=json_serial)

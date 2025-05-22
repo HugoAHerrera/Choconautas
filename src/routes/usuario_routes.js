@@ -4,10 +4,8 @@ const usuarioController = require('../controllers/usuario_controller');
 
 router.post('/usuarios', usuarioController.crearUsuario);
 
-router.get('/usuarios/:usuario-id', usuarioController.obtenerNoticiasDeUsuario);
-
-router.put('/usuarios/:usuario-id', usuarioController.actualizarUsuario);
-
-router.delete('/usuarios/:usuario-id', usuarioController.eliminarUsuario);
+router.get('/usuarios/:usuarioId', usuarioController.obtenerNoticiasDeUsuario);
+router.put('/usuarios/:usuarioId', usuarioController.actualizarUsuario);
+router.delete('/usuarios/:usuarioId', usuarioController.eliminarUsuario);
 
 module.exports = router;

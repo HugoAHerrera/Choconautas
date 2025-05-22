@@ -9,19 +9,27 @@ const crearUsuario = async (req, res) => {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
-    const nuevoUsuario = await usuarioService.crearUsuario({ nombre, email });
+    const nuevoUsuario = await usuarioService.crearUsuario({
+      nombre,
+      email,
+      fechaRegistro: new Date().toISOString(),
+    });
+
     res.status(201).json(nuevoUsuario);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el usuario', error: error.message });
+    res.status(500).json({
+      message: 'Error al crear el usuario',
+      error: error.message,
+    });
   }
 };
 
-// GET /usuarios/{usuario-id}
+// GET /usuarios/:usuarioId
 const obtenerNoticiasDeUsuario = async (req, res) => {
   try {
-    const usuarioId = req.params['usuario-id'];
-
+    const usuarioId = req.params.usuarioId;
     const usuario = await usuarioService.obtenerUsuarioPorId(usuarioId);
+
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
@@ -29,14 +37,17 @@ const obtenerNoticiasDeUsuario = async (req, res) => {
     const noticias = await usuarioService.obtenerNoticiasDeUsuario(usuarioId);
     res.status(200).json(noticias);
   } catch (error) {
-    res.status(500).json({ message: 'Error obteniendo publicaciones del usuario', error: error.message });
+    res.status(500).json({
+      message: 'Error obteniendo publicaciones del usuario',
+      error: error.message,
+    });
   }
 };
 
-// PUT /usuarios/{usuario-id}
+// PUT /usuarios/:usuarioId
 const actualizarUsuario = async (req, res) => {
   try {
-    const usuarioId = req.params['usuario-id'];
+    const usuarioId = req.params.usuarioId;
     const datos = req.body;
 
     if (!datos.nombre && !datos.email) {
@@ -44,21 +55,19 @@ const actualizarUsuario = async (req, res) => {
     }
 
     const actualizado = await usuarioService.actualizarUsuario(usuarioId, datos);
-
-    if (!actualizado) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
-
     res.status(200).json(actualizado);
   } catch (error) {
-    res.status(500).json({ message: 'Error actualizando el usuario', error: error.message });
+    res.status(500).json({
+      message: 'Error actualizando el usuario',
+      error: error.message,
+    });
   }
 };
 
-// DELETE /usuarios/{usuario-id}
+// DELETE /usuarios/:usuarioId
 const eliminarUsuario = async (req, res) => {
   try {
-    const usuarioId = req.params['usuario-id'];
+    const usuarioId = req.params.usuarioId;
     const eliminado = await usuarioService.eliminarUsuario(usuarioId);
 
     if (!eliminado) {
@@ -67,7 +76,10 @@ const eliminarUsuario = async (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: 'Error eliminando el usuario', error: error.message });
+    res.status(500).json({
+      message: 'Error eliminando el usuario',
+      error: error.message,
+    });
   }
 };
 

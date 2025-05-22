@@ -1,36 +1,36 @@
 [
   {
-    "_id": "682f2d781c60e1f60c175754",
+    "_id": "682f555734873f09016b5638",
     "nombre": "Astronomía",
     "descripcion": "Estudio de cuerpos celestes y el universo"
   },
   {
-    "_id": "682f2d781c60e1f60c175755",
+    "_id": "682f555734873f09016b5639",
     "nombre": "Astrofísica",
     "descripcion": "Física aplicada a fenómenos espaciales"
   },
   {
-    "_id": "682f2d781c60e1f60c175756",
+    "_id": "682f555734873f09016b563a",
     "nombre": "Exploración espacial",
     "descripcion": "Misiones y avances tecnológicos"
   },
   {
-    "_id": "682f2d781c60e1f60c175757",
+    "_id": "682f555734873f09016b563b",
     "nombre": "Astrobiología",
     "descripcion": "Estudio de la vida en el universo"
   },
   {
-    "_id": "682f2d781c60e1f60c175758",
+    "_id": "682f555734873f09016b563c",
     "nombre": "Observación astronómica",
     "descripcion": "Uso de telescopios y satélites"
   },
   {
-    "_id": "682f2d781c60e1f60c175759",
+    "_id": "682f555734873f09016b563d",
     "nombre": "Cosmología",
     "descripcion": "Origen y evolución del universo"
   },
   {
-    "_id": "682f2d781c60e1f60c17575a",
+    "_id": "682f555734873f09016b563e",
     "nombre": "Ingeniería espacial",
     "descripcion": "Diseño de naves y estaciones"
   }

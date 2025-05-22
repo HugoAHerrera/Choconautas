@@ -21,7 +21,7 @@ usuarios = [
 ]
 
 for usuario in usuarios[-7:]:
-    usuario["email"] = f"{usuario['nombre'].lower().replace(' ', '')}@nasa.gov"
+    usuario["email"] = f"{usuario['nombre'].lower().replace(' ', '')}@choconautas.ceu"
 
 categorias = [
     {"_id": ObjectId(), "nombre": "Astronomía", "descripcion": "Estudio de cuerpos celestes y el universo"},
@@ -122,6 +122,12 @@ def json_serial(obj):
         raise e
     raise TypeError(f"Type not serializable: {type(obj)}")
 
+usuarios.append({
+    "_id": ObjectId(),
+    "nombre": "Cuenta Nasa Oficial",
+    "email": "nasa@nasa_oficial.gov",
+    "fechaRegistro": "2024-09-27T15:58:16.462177"
+})
 
 with open(ruta_directorio + "usuarios.json", "w", encoding="utf-8") as f:
     json.dump(usuarios, f, ensure_ascii=False, indent=2, default=json_serial)

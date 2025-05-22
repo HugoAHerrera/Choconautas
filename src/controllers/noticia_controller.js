@@ -235,10 +235,10 @@ const borrarComentariosDeNoticia = async (req, res) => {
 const actualizarComentario = async (req, res) => {
   try {
     const { noticiaId, comentarioId } = req.params;
-    const { contenido } = req.body;
+    const { contenido, autorId } = req.body;
 
-    if (!contenido) {
-      return res.status(400).json({ message: 'El campo contenido es obligatorio' });
+    if (!contenido || autorId == null) {
+      return res.status(400).json({ message: 'Los campos contenido y autorId son obligatorios' });
     }
 
     const noticia = await noticiaService.obtenerNoticiaPorId(noticiaId);
@@ -246,7 +246,7 @@ const actualizarComentario = async (req, res) => {
       return res.status(404).json({ message: 'Noticia no encontrada' });
     }
 
-    const comentarioActualizado = await comentarioService.actualizarComentario(noticiaId, comentarioId, { contenido });
+    const comentarioActualizado = await comentarioService.actualizarComentario(noticiaId, comentarioId, { contenido, autorId });
 
     res.status(200).json(comentarioActualizado);
   } catch (error) {

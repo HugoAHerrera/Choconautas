@@ -89,6 +89,7 @@ const actualizarComentario = async (noticiaId, comentarioId, nuevosDatos) => {
       {
         $set: {
           contenido: nuevosDatos.contenido,
+          autorId: Number(nuevosDatos.autorId),
           fecha: new Date()
         }
       },

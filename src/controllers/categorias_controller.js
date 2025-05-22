@@ -16,7 +16,7 @@ const crearCategoria = async (req, res) => {
   }
 };
 
-// GET /categoria
+// GET /categorias
 const obtenerTodasCategorias = async (req, res) => {
     try {
      const categorias = await categoriaService.obtenerCategorias();
@@ -26,15 +26,15 @@ const obtenerTodasCategorias = async (req, res) => {
     }
   };
 
-// GET /categoria/{categoria-id}
+// GET /categorias/{categoriaId}
 const obtenerCategoriaConId = async (req, res) => {
   try {
-    const categoriaId = req.params['categoria-id'];
+    const categoriaId = req.params['categoriaId'];
 
     const noticias = await categoriaService.obtenerCategoriaPorId(categoriaId);
     res.status(200).json(noticias);
   } catch (error) {
-    res.status(500).json({ message: 'Error obteniendo publicaciones del usuario', error: error.message });
+    res.status(500).json({ message: 'Error obteniendo la categoria indicada', error: error.message });
   }
 };
 

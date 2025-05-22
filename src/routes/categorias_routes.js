@@ -4,8 +4,8 @@ const categoriasController = require('../controllers/categorias_controller');
 
 router.post('/categorias', categoriasController.crearCategoria);
 
-router.get('/categorias/:categoria-id', categoriasController.obtenerTodasCategorias);
+router.get('/categorias', categoriasController.obtenerTodasCategorias);
 
-router.get('/categorias/:categoria-id', categoriasController.obtenerCategoriaConId);
+router.get('/categorias/:categoriaId', categoriasController.obtenerCategoriaConId);
 
 module.exports = router;

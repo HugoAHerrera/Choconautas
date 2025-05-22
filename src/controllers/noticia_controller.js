@@ -129,6 +129,40 @@ const obtenerNoticiaPorId = async (req, res) => {
   }
 };
 
+const actualizarNoticiaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const nuevosDatos = req.body;
+
+    const noticiaExistente = await noticiaService.obtenerNoticiaPorId(id);
+    if (!noticiaExistente) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    const noticiaActualizada = await noticiaService.actualizarNoticiaPorId(id, nuevosDatos);
+
+    res.status(200).json(noticiaActualizada);
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando noticia', error: error.message });
+  }
+};
+
+const borrarNoticiaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const noticiaExistente = await noticiaService.obtenerNoticiaPorId(id);
+    if (!noticiaExistente) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    await noticiaService.borrarNoticiaPorId(id);
+
+    res.status(204).send(); // No content
+  } catch (error) {
+    res.status(500).json({ message: 'Error borrando noticia', error: error.message });
+  }
+};
 
 const obtenerComentariosDeNoticia = async (req, res) => {
   try {
@@ -213,7 +247,7 @@ const actualizarComentario = async (req, res) => {
     }
 
     const comentarioActualizado = await comentarioService.actualizarComentario(noticiaId, comentarioId, { contenido });
-    
+
     res.status(200).json(comentarioActualizado);
   } catch (error) {
     res.status(500).json({ message: 'Error actualizando comentario', error: error.message });
@@ -249,6 +283,8 @@ module.exports = {
   obtenerNoticiasPorFecha,
   obtenerNoticiasNasaPorFecha,
   obtenerNoticiaPorId,
+  actualizarNoticiaPorId,
+  borrarNoticiaPorId,
   obtenerComentariosDeNoticia,
   obtenerComentarioPorId,
   crearComentarioEnNoticia,

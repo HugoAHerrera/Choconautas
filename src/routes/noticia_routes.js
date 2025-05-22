@@ -14,6 +14,10 @@ router.get('/noticias/nasa/fecha/:fecha', noticiaController.obtenerNoticiasNasaP
 
 router.get('/noticias/id/:id', noticiaController.obtenerNoticiaPorId);
 
+router.put('/noticias/id/:id', noticiaController.actualizarNoticiaPorId);
+
+router.delete('/noticias/id/:id', noticiaController.borrarNoticiaPorId);
+
 router.get('/noticias/:noticiaId/comentarios', noticiaController.obtenerComentariosDeNoticia);
 
 router.post('/noticias/:noticiaId/comentarios', noticiaController.crearComentarioEnNoticia);

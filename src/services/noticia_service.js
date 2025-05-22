@@ -71,6 +71,26 @@ const obtenerNoticiaPorId = async (id) => {
   return await noticiasCollection.findOne({ _id: Number(id) });
 };
 
+const actualizarNoticiaPorId = async (id, nuevosDatos) => {
+  const noticiasCollection = getNoticiasCollection();
+
+  const resultado = await noticiasCollection.findOneAndUpdate(
+    { _id: Number(id) },
+    { $set: nuevosDatos },
+    { returnDocument: 'after' }
+  );
+
+  return resultado.value;
+};
+
+const borrarNoticiaPorId = async (id) => {
+  const noticiasCollection = getNoticiasCollection();
+
+  const resultado = await noticiasCollection.deleteOne({ _id: Number(id) });
+
+  return resultado.deletedCount > 0;
+};
+
 const obtenerNoticiasPorRangoAutorId = async (min, max) => {
   try {
     const noticiasCollection = getNoticiasCollection();
@@ -109,5 +129,7 @@ module.exports = {
   fetchNoticiasNASASinAPI,
   obtenerNoticiasPorFecha,
   obtenerNoticiaPorId,
+  actualizarNoticiaPorId,
+  borrarNoticiaPorId,
   obtenerNoticiasPorRangoAutorId
 };

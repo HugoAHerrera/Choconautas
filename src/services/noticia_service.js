@@ -68,6 +68,25 @@ const obtenerNoticiasPorFecha = async (fecha) => {
   }
 };
 
+const obtenerNoticiasNasaPorFecha = async (fecha) => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+
+    const fechaInicio = new Date(fecha);
+    const fechaFin = new Date(new Date(fecha).setUTCHours(23, 59, 59, 999));
+
+    const noticias = await noticiasCollection.find({
+      fecha: { $gte: fechaInicio, $lte: fechaFin },
+      autorId: "682f2d781c60e1f60c175753"
+    }).toArray();
+
+    return noticias;
+  } catch (error) {
+    throw new Error('Error al obtener noticias por fecha: ' + error.message);
+  }
+};
+
+
 const obtenerNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
   return await noticiasCollection.findOne({ _id: id });
@@ -124,6 +143,17 @@ const fetchNoticiasNASASinAPI = async (fecha) => {
 }
 };
 
+const obtenerNoticiasNasa = async () => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+    const noticias = await noticiasCollection
+      .find({ autorId: "682f2d781c60e1f60c175753" })
+      .toArray();
+    return noticias;
+  } catch (error) {
+    throw new Error('Error al obtener noticias de la NASA: ' + error.message);
+  }
+};
 
 module.exports = {
   crearNoticia,
@@ -133,5 +163,7 @@ module.exports = {
   obtenerNoticiaPorId,
   actualizarNoticiaPorId,
   borrarNoticiaPorId,
-  obtenerNoticiasPorRangoAutorId
+  obtenerNoticiasPorRangoAutorId,
+  obtenerNoticiasNasa,
+  obtenerNoticiasNasaPorFecha
 };

@@ -77,9 +77,50 @@ const obtenerComentarioPorId = async (noticiaId, comentarioId) => {
   }
 };
 
+const actualizarComentario = async (noticiaId, comentarioId, nuevosDatos) => {
+  try {
+    const comentariosCollection = getComentariosCollection();
+
+    const resultado = await comentariosCollection.findOneAndUpdate(
+      {
+        noticiaId: Number(noticiaId),
+        _id: Number(comentarioId)
+      },
+      {
+        $set: {
+          contenido: nuevosDatos.contenido,
+          fecha: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    );
+
+    return resultado.value;
+  } catch (error) {
+    throw new Error('Error al actualizar comentario: ' + error.message);
+  }
+};
+
+const borrarComentarioPorId = async (noticiaId, comentarioId) => {
+  try {
+    const comentariosCollection = getComentariosCollection();
+
+    const resultado = await comentariosCollection.deleteOne({
+      noticiaId: Number(noticiaId),
+      _id: Number(comentarioId)
+    });
+
+    return resultado.deletedCount > 0;
+  } catch (error) {
+    throw new Error('Error al borrar comentario: ' + error.message);
+  }
+};
+
 module.exports = {
   obtenerComentariosDeNoticia,
   crearComentarioEnNoticia,
   borrarComentariosDeNoticia,
-  obtenerComentarioPorId
+  obtenerComentarioPorId,
+  actualizarComentario,
+  borrarComentarioPorId
 };

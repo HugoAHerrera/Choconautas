@@ -198,6 +198,49 @@ const borrarComentariosDeNoticia = async (req, res) => {
   }
 };
 
+const actualizarComentario = async (req, res) => {
+  try {
+    const { noticiaId, comentarioId } = req.params;
+    const { contenido } = req.body;
+
+    if (!contenido) {
+      return res.status(400).json({ message: 'El campo contenido es obligatorio' });
+    }
+
+    const noticia = await noticiaService.obtenerNoticiaPorId(noticiaId);
+    if (!noticia) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    const comentarioActualizado = await comentarioService.actualizarComentario(noticiaId, comentarioId, { contenido });
+    
+    res.status(200).json(comentarioActualizado);
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando comentario', error: error.message });
+  }
+};
+
+const borrarComentarioPorId = async (req, res) => {
+  try {
+    const { noticiaId, comentarioId } = req.params;
+
+    const noticia = await noticiaService.obtenerNoticiaPorId(noticiaId);
+    if (!noticia) {
+      return res.status(404).json({ message: 'Noticia no encontrada' });
+    }
+
+    const eliminado = await comentarioService.borrarComentarioPorId(noticiaId, comentarioId);
+    if (!eliminado) {
+      return res.status(404).json({ message: 'Comentario no encontrado' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: 'Error eliminando comentario', error: error.message });
+  }
+};
+
+
 
 module.exports = {
   crearNoticia,
@@ -209,5 +252,7 @@ module.exports = {
   obtenerComentariosDeNoticia,
   obtenerComentarioPorId,
   crearComentarioEnNoticia,
-  borrarComentariosDeNoticia
+  borrarComentariosDeNoticia,
+  actualizarComentario,
+  borrarComentarioPorId
 };

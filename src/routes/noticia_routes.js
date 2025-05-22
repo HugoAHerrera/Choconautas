@@ -16,11 +16,15 @@ router.get('/noticias/id/:id', noticiaController.obtenerNoticiaPorId);
 
 router.get('/noticias/:noticiaId/comentarios', noticiaController.obtenerComentariosDeNoticia);
 
-router.get('/noticias/:noticiaId/comentarios/:comentarioId', noticiaController.obtenerComentarioPorId);
-
 router.post('/noticias/:noticiaId/comentarios', noticiaController.crearComentarioEnNoticia);
 
 router.delete('/noticias/:noticiaId/comentarios', noticiaController.borrarComentariosDeNoticia);
+
+router.get('/noticias/:noticiaId/comentarios/:comentarioId', noticiaController.obtenerComentarioPorId);
+
+router.put('/noticias/:noticiaId/comentarios/:comentarioId', noticiaController.actualizarComentario);
+
+router.delete('/noticias/:noticiaId/comentarios/:comentarioId', noticiaController.borrarComentarioPorId);
 
 
 

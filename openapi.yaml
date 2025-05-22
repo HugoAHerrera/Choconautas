@@ -207,6 +207,24 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /noticias/{noticia-id}/comentarios/{comentario-id}:
+    get:
+    summary: Obtener un comentario concreto
+    parameters:
+      - $ref: '#/components/parameters/NoticiaId'
+      - $ref: '#/components/parameters/ComentarioId'
+    responses:
+      '200':
+        description: Comentario encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comentario'
+      '404':
+        description: Comentario o noticia no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
     put:
       summary: Modificar un comentario concreto
       parameters:

@@ -51,11 +51,14 @@ async function fetchNoticias(start, end) {
 }
 
 
-// Función principal
 async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
   let start = new Date(startDate);
   let end = new Date(endDate);
   const nuevasNoticias = [];
+
+  // ← Agregar aquí: Obtener categorías válidas desde MongoDB
+  const categorias = await getCategoriasCollection().find().toArray();
+  const categoriaIds = categorias.map(cat => cat._id); // pueden ser ObjectId o strings
 
   while (start <= end) {
     let bloqueEnd = addDays(start, BLOQUE_DIAS - 1);
@@ -68,12 +71,12 @@ async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
           titulo: noticia.title || 'Sin título',
           contenido: noticia.explanation || 'Sin explicación',
           fecha: noticia.date || formatDate(start),
-          autorId: getRandomInt(20, 30),
-          categoriaId: getRandomInt(1, 7)
+          autorId: "682f2d781c60e1f60c175753", // ← fijo, tipo string
+          categoriaId: categoriaIds[Math.floor(Math.random() * categoriaIds.length)] // ← real, aleatorio
         });
       });
     } catch (error) {
-      console.error(`❌ Error al obtener noticias del ${formatDate(start)} al ${formatDate(bloqueEnd)}:`, error.message);
+      console.error(`Error al obtener noticias del ${formatDate(start)} al ${formatDate(bloqueEnd)}:`, error.message);
     }
 
     start = addDays(bloqueEnd, 1);

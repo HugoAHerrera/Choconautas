@@ -77,7 +77,7 @@ const actualizarNoticiaPorId = async (id, nuevosDatos) => {
   const noticiasCollection = getNoticiasCollection();
 
   const resultado = await noticiasCollection.findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: id },
     { $set: nuevosDatos },
     { returnDocument: 'after' }
   );
@@ -88,7 +88,7 @@ const actualizarNoticiaPorId = async (id, nuevosDatos) => {
 const borrarNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
 
-  const resultado = await noticiasCollection.deleteOne({ _id: new ObjectId(id) });
+  const resultado = await noticiasCollection.deleteOne({ _id: id });
 
   return resultado.deletedCount > 0;
 };

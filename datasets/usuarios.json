@@ -1,247 +1,247 @@
 [
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12356"
+      "$oid": "683050b61388ec33708f94b0"
     },
     "nombre": "Elena Martínez",
     "email": "elenamartínez@choconautas.com",
-    "fechaRegistro": "2023-09-21T12:02:16.343292"
+    "fechaRegistro": "2024-09-22T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12357"
+      "$oid": "683050b61388ec33708f94b1"
     },
     "nombre": "Carlos Vega",
     "email": "carlosvega@choconautas.com",
-    "fechaRegistro": "2022-12-10T12:02:16.343292"
+    "fechaRegistro": "2024-04-30T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12358"
+      "$oid": "683050b61388ec33708f94b2"
     },
     "nombre": "Lucía Navarro",
     "email": "lucíanavarro@choconautas.com",
-    "fechaRegistro": "2023-11-15T12:02:16.343292"
+    "fechaRegistro": "2024-11-24T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12359"
+      "$oid": "683050b61388ec33708f94b3"
     },
     "nombre": "Martín Ruiz",
     "email": "martínruiz@choconautas.com",
-    "fechaRegistro": "2024-02-02T12:02:16.343292"
+    "fechaRegistro": "2024-02-10T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235a"
+      "$oid": "683050b61388ec33708f94b4"
     },
     "nombre": "Sofía Herrera",
     "email": "sofíaherrera@choconautas.com",
-    "fechaRegistro": "2022-09-21T12:02:16.343292"
+    "fechaRegistro": "2023-10-29T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235b"
+      "$oid": "683050b61388ec33708f94b5"
     },
     "nombre": "Andrés Ibáñez",
     "email": "andrésibáñez@choconautas.com",
-    "fechaRegistro": "2024-12-13T12:02:16.343292"
+    "fechaRegistro": "2024-10-30T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235c"
+      "$oid": "683050b61388ec33708f94b6"
     },
     "nombre": "Valeria Paredes",
     "email": "valeriaparedes@choconautas.com",
-    "fechaRegistro": "2024-05-20T12:02:16.343292"
+    "fechaRegistro": "2023-07-14T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235d"
+      "$oid": "683050b61388ec33708f94b7"
     },
     "nombre": "Hugo Lozano",
     "email": "hugolozano@choconautas.com",
-    "fechaRegistro": "2025-01-27T12:02:16.343292"
+    "fechaRegistro": "2023-04-13T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235e"
+      "$oid": "683050b61388ec33708f94b8"
     },
     "nombre": "Isabela Ríos",
     "email": "isabelaríos@choconautas.com",
-    "fechaRegistro": "2023-06-20T12:02:16.343292"
+    "fechaRegistro": "2025-02-04T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1235f"
+      "$oid": "683050b61388ec33708f94b9"
     },
     "nombre": "Javier Fuentes",
     "email": "javierfuentes@choconautas.com",
-    "fechaRegistro": "2024-01-05T12:02:16.343292"
+    "fechaRegistro": "2023-03-22T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12360"
+      "$oid": "683050b61388ec33708f94ba"
     },
     "nombre": "Camila Soto",
     "email": "camilasoto@choconautas.com",
-    "fechaRegistro": "2022-09-07T12:02:16.343292"
+    "fechaRegistro": "2024-06-05T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12361"
+      "$oid": "683050b61388ec33708f94bb"
     },
     "nombre": "Fernando Salas",
     "email": "fernandosalas@choconautas.com",
-    "fechaRegistro": "2022-09-27T12:02:16.343292"
+    "fechaRegistro": "2023-12-31T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12362"
+      "$oid": "683050b61388ec33708f94bc"
     },
     "nombre": "Paula Medina",
     "email": "paulamedina@choconautas.com",
-    "fechaRegistro": "2023-03-28T12:02:16.343292"
+    "fechaRegistro": "2025-01-31T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12363"
+      "$oid": "683050b61388ec33708f94bd"
     },
     "nombre": "Manuel Ortega",
     "email": "manuelortega@choconautas.com",
-    "fechaRegistro": "2024-07-27T12:02:16.343292"
+    "fechaRegistro": "2024-03-16T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12364"
+      "$oid": "683050b61388ec33708f94be"
     },
     "nombre": "Sara Delgado",
     "email": "saradelgado@choconautas.com",
-    "fechaRegistro": "2024-06-13T12:02:16.343292"
+    "fechaRegistro": "2023-02-03T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12365"
+      "$oid": "683050b61388ec33708f94bf"
     },
     "nombre": "Ignacio Torres",
     "email": "ignaciotorres@choconautas.com",
-    "fechaRegistro": "2024-05-06T12:02:16.343292"
+    "fechaRegistro": "2022-12-01T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12366"
+      "$oid": "683050b61388ec33708f94c0"
     },
     "nombre": "Emma Galván",
     "email": "emmagalván@choconautas.com",
-    "fechaRegistro": "2022-09-21T12:02:16.343292"
+    "fechaRegistro": "2023-03-05T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12367"
+      "$oid": "683050b61388ec33708f94c1"
     },
     "nombre": "Diego Camacho",
     "email": "diegocamacho@choconautas.com",
-    "fechaRegistro": "2024-12-24T12:02:16.343292"
+    "fechaRegistro": "2024-05-03T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12368"
+      "$oid": "683050b61388ec33708f94c2"
     },
     "nombre": "Laura Peña",
     "email": "laurapeña@choconautas.com",
-    "fechaRegistro": "2024-02-10T12:02:16.343292"
+    "fechaRegistro": "2024-03-17T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12369"
+      "$oid": "683050b61388ec33708f94c3"
     },
     "nombre": "Adrián Cordero",
     "email": "adriáncordero@choconautas.com",
-    "fechaRegistro": "2023-03-08T12:02:16.343292"
+    "fechaRegistro": "2024-06-13T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236a"
+      "$oid": "683050b61388ec33708f94c4"
     },
     "nombre": "Nicolás Ramírez",
     "email": "nicolásramírez@choconautas.com",
-    "fechaRegistro": "2024-11-25T12:02:16.343292"
+    "fechaRegistro": "2024-10-17T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236b"
+      "$oid": "683050b61388ec33708f94c5"
     },
     "nombre": "Mariana Castaño",
     "email": "marianacastaño@choconautas.com",
-    "fechaRegistro": "2023-05-29T12:02:16.343292"
+    "fechaRegistro": "2022-12-11T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236c"
+      "$oid": "683050b61388ec33708f94c6"
     },
     "nombre": "Tomás Aguirre",
     "email": "tomásaguirre@choconautas.com",
-    "fechaRegistro": "2023-06-14T12:02:16.343292"
+    "fechaRegistro": "2022-10-06T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236d"
+      "$oid": "683050b61388ec33708f94c7"
     },
     "nombre": "Sally Ride",
     "email": "sallyride@choconautas.ceu",
-    "fechaRegistro": "2024-08-03T12:02:16.343292"
+    "fechaRegistro": "2024-07-31T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236e"
+      "$oid": "683050b61388ec33708f94c8"
     },
     "nombre": "Mae Jemison",
     "email": "maejemison@choconautas.ceu",
-    "fechaRegistro": "2024-07-02T12:02:16.343292"
+    "fechaRegistro": "2024-04-25T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1236f"
+      "$oid": "683050b61388ec33708f94c9"
     },
     "nombre": "Buzz Aldrin",
     "email": "buzzaldrin@choconautas.ceu",
-    "fechaRegistro": "2023-06-11T12:02:16.343292"
+    "fechaRegistro": "2024-09-28T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12370"
+      "$oid": "683050b61388ec33708f94ca"
     },
     "nombre": "Chris Hadfield",
     "email": "chrishadfield@choconautas.ceu",
-    "fechaRegistro": "2024-11-08T12:02:16.343292"
+    "fechaRegistro": "2024-07-16T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12371"
+      "$oid": "683050b61388ec33708f94cb"
     },
     "nombre": "Peggy Whitson",
     "email": "peggywhitson@choconautas.ceu",
-    "fechaRegistro": "2024-08-20T12:02:16.343292"
+    "fechaRegistro": "2023-02-14T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12372"
+      "$oid": "683050b61388ec33708f94cc"
     },
     "nombre": "Yuri Gagarin",
     "email": "yurigagarin@choconautas.ceu",
-    "fechaRegistro": "2024-01-21T12:02:16.343292"
+    "fechaRegistro": "2025-02-09T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12373"
+      "$oid": "683050b61388ec33708f94cd"
     },
     "nombre": "Valentina Tereshkova",
     "email": "valentinatereshkova@choconautas.ceu",
-    "fechaRegistro": "2024-07-14T12:02:16.343292"
+    "fechaRegistro": "2024-10-25T12:40:54.456018"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce129a4"
+      "$oid": "683050b61388ec33708f9b5e"
     },
     "nombre": "Cuenta Nasa Oficial",
     "email": "nasa@nasa_oficial.gov",

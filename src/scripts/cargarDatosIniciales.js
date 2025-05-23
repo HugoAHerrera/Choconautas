@@ -1,47 +1,36 @@
-const { MongoClient, ObjectId } = require('mongodb');
-const fs = require('fs');
+const { exec } = require('child_process');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const uri = process.env.MONGO_URI;
-const client = new MongoClient(uri);
+const MONGO_URI = process.env.MONGO_URI;
+const DB = 'choconautas';
 
-// Convertir $oid en ObjectId
-function convertirOid(obj) {
-  if (Array.isArray(obj)) {
-    return obj.map(convertirOid);
-  } else if (obj && typeof obj === 'object') {
-    if ('$oid' in obj) return new ObjectId(obj['$oid']);
-    const nuevo = {};
-    for (const clave in obj) {
-      nuevo[clave] = convertirOid(obj[clave]);
+const colecciones = ['usuarios', 'categorias', 'noticias', 'comentarios'];
+
+async function importarDatos() {
+  for (const coleccion of colecciones) {
+    const cmd = `mongoimport --uri="${MONGO_URI}" --db=${DB} --collection=${coleccion} --file=datasets/${coleccion}.json --jsonArray --drop`;
+    console.log(`Importando ${coleccion}...`);
+    
+    try {
+      await new Promise((resolve, reject) => {
+        exec(cmd, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error importando ${coleccion}:`, error);
+            return reject(error);
+          }
+          if (stderr) console.error(stderr);
+          console.log(stdout);
+          resolve();
+        });
+      });
+    } catch {
+      console.error(`Fallo la importación de ${coleccion}`);
+      process.exit(1);
     }
-    return nuevo;
   }
-  return obj;
+  console.log('Importación finalizada.');
 }
 
-const cargarDatos = async () => {
-  try {
-    await client.connect();
-    const db = client.db('choconautas');
+importarDatos();
 
-    const usuarios = convertirOid(JSON.parse(fs.readFileSync('datasets/usuarios.json', 'utf8')));
-    const categorias = convertirOid(JSON.parse(fs.readFileSync('datasets/categorias.json', 'utf8')));
-    const noticias = convertirOid(JSON.parse(fs.readFileSync('datasets/noticias.json', 'utf8')));
-    const comentarios = convertirOid(JSON.parse(fs.readFileSync('datasets/comentarios.json', 'utf8')));
-
-    await db.collection('usuarios').insertMany(usuarios);
-    await db.collection('categorias').insertMany(categorias);
-    await db.collection('noticias').insertMany(noticias);
-    await db.collection('comentarios').insertMany(comentarios);
-
-    console.log('Datos iniciales cargados correctamente.');
-  } catch (error) {
-    console.error('Error al cargar los datos:', error);
-  } finally {
-    await client.close();
-  }
-};
-
-cargarDatos();

@@ -4,9 +4,11 @@ const crearNoticia = async (noticiaData) => {
   try {
     const noticiasCollection = getNoticiasCollection();
 
-    const usuario = await getUsuariosCollection().findOne({ _id: noticiaData.autorId });
-    const categoria = await getCategoriasCollection().findOne({ _id: noticiaData.categoriaId });
+    const autorObjectId = new ObjectId(noticiaData.autorId);
+    const categoriaObjectId = new ObjectId(noticiaData.categoriaId);
 
+    const usuario = await getUsuariosCollection().findOne({ _id: autorObjectId });
+    const categoria = await getCategoriasCollection().findOne({ _id: categoriaObjectId });
 
     if (!usuario || !categoria) {
       throw new Error('Usuario o categoría no encontrados');
@@ -16,8 +18,8 @@ const crearNoticia = async (noticiaData) => {
       titulo: noticiaData.titulo,
       contenido: noticiaData.contenido,
       fecha: new Date(),
-      autorId: noticiaData.autorId,
-      categoriaId: noticiaData.categoriaId,
+      autorId: autorObjectId,
+      categoriaId: categoriaObjectId,
     };
 
     const result = await noticiasCollection.insertOne(noticia);
@@ -53,19 +55,14 @@ const obtenerNoticias = async (pagina = 1, limite = 10, categoria, fechaInicio, 
   }
 };
 
-const obtenerNoticiasPorFecha = async (fecha) => {
-  try {
-    const noticiasCollection = getNoticiasCollection();
-
-    const noticias = await noticiasCollection.find({
-      fecha: { $regex: `^${fecha}` }
-    }).toArray();
-
-    return noticias;
-
-  } catch (error) {
-    throw new Error('Error al obtener noticias por fecha: ' + error.message);
-  }
+const obtenerNoticiasPorFecha = async (inicioDia, finDia) => {
+  const noticiasCollection = getNoticiasCollection();
+  return await noticiasCollection.find({
+    fecha: {
+      $gte: inicioDia,
+      $lte: finDia
+    }
+  }).toArray();
 };
 
 const obtenerNoticiasNasaPorFecha = async (fecha) => {

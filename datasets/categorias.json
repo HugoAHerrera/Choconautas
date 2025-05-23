@@ -1,49 +1,49 @@
 [
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12374"
+      "$oid": "683050b61388ec33708f94ce"
     },
     "nombre": "Astronomía",
     "descripcion": "Estudio de cuerpos celestes y el universo"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12375"
+      "$oid": "683050b61388ec33708f94cf"
     },
     "nombre": "Astrofísica",
     "descripcion": "Física aplicada a fenómenos espaciales"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12376"
+      "$oid": "683050b61388ec33708f94d0"
     },
     "nombre": "Exploración espacial",
     "descripcion": "Misiones y avances tecnológicos"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12377"
+      "$oid": "683050b61388ec33708f94d1"
     },
     "nombre": "Astrobiología",
     "descripcion": "Estudio de la vida en el universo"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12378"
+      "$oid": "683050b61388ec33708f94d2"
     },
     "nombre": "Observación astronómica",
     "descripcion": "Uso de telescopios y satélites"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce12379"
+      "$oid": "683050b61388ec33708f94d3"
     },
     "nombre": "Cosmología",
     "descripcion": "Origen y evolución del universo"
   },
   {
     "_id": {
-      "$oid": "683047a83c4323a1fce1237a"
+      "$oid": "683050b61388ec33708f94d4"
     },
     "nombre": "Ingeniería espacial",
     "descripcion": "Diseño de naves y estaciones"

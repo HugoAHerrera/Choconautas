@@ -37,11 +37,21 @@ const obtenerNoticiasNasa = async (req, res) => {
 const obtenerNoticiasPorFecha = async (req, res) => {
   try {
     const { fecha } = req.params;
-    if (isNaN(Date.parse(fecha))) {
+    const fechaObj = new Date(fecha);
+
+    if (isNaN(fechaObj.getTime())) {
       return res.status(400).json({ message: 'Fecha inválida' });
     }
 
-    const noticias = await noticiaService.obtenerNoticiasPorFecha(fecha);
+    // Inicio del día (00:00:00)
+    const inicioDia = new Date(fechaObj);
+    inicioDia.setHours(0, 0, 0, 0);
+
+    // Fin del día (23:59:59.999)
+    const finDia = new Date(fechaObj);
+    finDia.setHours(23, 59, 59, 999);
+
+    const noticias = await noticiaService.obtenerNoticiasPorFecha(inicioDia, finDia);
 
     if (!noticias.length) {
       return res.status(404).json({ message: 'No hay noticias para esa fecha' });

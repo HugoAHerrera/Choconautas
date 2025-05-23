@@ -9,12 +9,22 @@ Proyecto Sistemas Web II
 - Esta API estará conectada a una API externa de la NASA, la cual devolverá mensajes tanto en XML como JSON.
 - Estas noticias estarán almacenadas en la base de datos de MongoDB y todas las funciones CRUD realizaras por el usuario se verán aplicadas aquí.
 
-## Detalles sobre la aplicación
+## Detalles sobre ejecución
+
+### Generador de datos
+
 - Si se busca ejecutar el script de Python generador_noticias.py, es necesario installar:
 ```bash
     pip install pymongo
 ```
 - La API de la NASA ya está incluida en el fichero .env (público en el repositorio)
+
+### Arranque de la aplicación
+```bash
+    npm install
+    npm start
+```
+- Nota: los datos ya se cargan automáticamente
 
 ## Integrantes
 

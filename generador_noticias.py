@@ -1,7 +1,6 @@
-import json
 import random
 from datetime import datetime, timedelta
-from bson import ObjectId
+from bson import ObjectId, json_util
 
 usuarios = [
     {
@@ -84,7 +83,7 @@ fecha_base = datetime.now() - timedelta(days=365)
 for _ in range(1000):
     autor = random.choice(usuarios)
     categoria = random.choice(categorias)
-    fecha_noticia = (fecha_base + timedelta(days=random.randint(0, 365))).isoformat()
+    fecha_noticia = fecha_base + timedelta(days=random.randint(0, 365))
 
     noticia_id = ObjectId()
     noticia = {
@@ -103,40 +102,29 @@ for _ in range(1000):
             comentario = {
                 "_id": ObjectId(),
                 "contenido": random.choice(comentarios_posibles),
-                "fecha": (fecha_base + timedelta(days=random.randint(0, 365))).isoformat(),
+                "fecha": fecha_base + timedelta(days=random.randint(0, 365)),
                 "autorId": comentador["_id"],
                 "noticiaId": noticia_id
             }
             comentarios.append(comentario)
-            
-ruta_directorio = "datasets/"
-
-def json_serial(obj):
-    try:
-        if isinstance(obj, ObjectId):
-            return str(obj)
-        if isinstance(obj, datetime):
-            return obj.isoformat()
-    except Exception as e:
-        print("Error serializando:", obj, type(obj))
-        raise e
-    raise TypeError(f"Type not serializable: {type(obj)}")
 
 usuarios.append({
     "_id": ObjectId(),
     "nombre": "Cuenta Nasa Oficial",
     "email": "nasa@nasa_oficial.gov",
-    "fechaRegistro": "2024-09-27T15:58:16.462177"
+    "fechaRegistro": datetime(2024, 9, 27, 15, 58, 16, 462177)
 })
 
+ruta_directorio = "datasets/"
+
 with open(ruta_directorio + "usuarios.json", "w", encoding="utf-8") as f:
-    json.dump(usuarios, f, ensure_ascii=False, indent=2, default=json_serial)
+    f.write(json_util.dumps(usuarios, ensure_ascii=False, indent=2))
 
 with open(ruta_directorio + "categorias.json", "w", encoding="utf-8") as f:
-    json.dump(categorias, f, ensure_ascii=False, indent=2, default=json_serial)
+    f.write(json_util.dumps(categorias, ensure_ascii=False, indent=2))
 
 with open(ruta_directorio + "noticias.json", "w", encoding="utf-8") as f:
-    json.dump(noticias, f, ensure_ascii=False, indent=2, default=json_serial)
+    f.write(json_util.dumps(noticias, ensure_ascii=False, indent=2))
 
 with open(ruta_directorio + "comentarios.json", "w", encoding="utf-8") as f:
-    json.dump(comentarios, f, ensure_ascii=False, indent=2, default=json_serial)
+    f.write(json_util.dumps(comentarios, ensure_ascii=False, indent=2))

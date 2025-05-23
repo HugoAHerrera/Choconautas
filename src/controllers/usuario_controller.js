@@ -12,7 +12,7 @@ const crearUsuario = async (req, res) => {
     const nuevoUsuario = await usuarioService.crearUsuario({
       nombre,
       email,
-      fechaRegistro: new Date().toISOString(),
+      fechaRegistro: new Date(),
     });
 
     res.status(201).json(nuevoUsuario);
@@ -35,6 +35,11 @@ const obtenerNoticiasDeUsuario = async (req, res) => {
     }
 
     const noticias = await usuarioService.obtenerNoticiasDeUsuario(usuarioId);
+
+    if (!noticias || noticias.length === 0) {
+      return res.status(201).json({ message: 'Usuario sin publicaciones' });
+    }
+
     res.status(200).json(noticias);
   } catch (error) {
     res.status(500).json({

@@ -1,10 +1,10 @@
-const { getUsuariosCollection, getNoticiasCollection } = require('../config/database');
+const { getUsuariosCollection, ObjectId, getNoticiasCollection } = require('../config/database');
 
 // GET usuario por ID (string)
 const obtenerUsuarioPorId = async (id) => {
   try {
     const usuariosCollection = getUsuariosCollection();
-    const usuario = await usuariosCollection.findOne({ _id: id });
+    const usuario = await usuariosCollection.findOne({ _id: new ObjectId(id) });
     return usuario;
   } catch (error) {
     throw new Error('Error al obtener el usuario: ' + error.message);
@@ -16,12 +16,9 @@ const crearUsuario = async (datos) => {
   try {
     const usuariosCollection = getUsuariosCollection();
 
-    // Crear ID único como string (puedes usar UUID u otro sistema)
-    const nuevoId = crypto.randomUUID(); // o usa otro generador si prefieres
-    const usuarioConId = { _id: nuevoId, ...datos };
-
-    await usuariosCollection.insertOne(usuarioConId);
-    return usuarioConId;
+    const result = await usuariosCollection.insertOne(datos);
+    const resultado = await usuariosCollection.findOne({ _id: result.insertedId });
+    return resultado;
   } catch (error) {
     throw new Error('Error al crear el usuario: ' + error.message);
   }
@@ -32,7 +29,7 @@ const actualizarUsuario = async (id, datos) => {
   try {
     const usuariosCollection = getUsuariosCollection();
     const resultado = await usuariosCollection.findOneAndUpdate(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: datos },
       { returnDocument: 'after' }
     );
@@ -47,7 +44,7 @@ const actualizarUsuario = async (id, datos) => {
 const eliminarUsuario = async (id) => {
   try {
     const usuariosCollection = getUsuariosCollection();
-    const resultado = await usuariosCollection.deleteOne({ _id: id });
+    const resultado = await usuariosCollection.deleteOne({ _id: new ObjectId(id) });
     return resultado.deletedCount > 0;
   } catch (error) {
     throw new Error('Error al eliminar el usuario: ' + error.message);
@@ -58,7 +55,7 @@ const eliminarUsuario = async (id) => {
 const obtenerNoticiasDeUsuario = async (usuarioId) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    const noticias = await noticiasCollection.find({ autorId: usuarioId }).toArray();
+    const noticias = await noticiasCollection.find({ autorId: new ObjectId(usuarioId) }).toArray();
     return noticias;
   } catch (error) {
     throw new Error('Error al obtener noticias del usuario: ' + error.message);

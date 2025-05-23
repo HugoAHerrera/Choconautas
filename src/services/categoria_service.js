@@ -23,8 +23,7 @@ const obtenerCategorias = async () => {
 const obtenerCategoriaPorId = async (id) => {
   try {
     const categoriasCollection = getCategoriasCollection();
-    // const categoria = await categoriasCollection.findOne({ _id: ObjectId(id) });
-    const categoria = await categoriasCollection.findOne({ _id: isNaN(id) ? id : parseInt(id) });
+    const categoria = await categoriasCollection.findOne({ _id: new ObjectId(id) });
     return categoria;
   } catch (error) {
     throw new Error('Error al obtener la categoría: ' + error.message);

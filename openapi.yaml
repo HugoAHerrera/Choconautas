@@ -198,7 +198,7 @@ paths:
         - $ref: '#/components/parameters/NoticiaId'
       responses:
         '204':
-          description: Comentarios eliminados (sin contenido)
+          description: Comentarios eliminados
         '404':
           description: Noticia no encontrada
           content:

@@ -1,4 +1,5 @@
 const categoriaService = require('../services/categoria_service');
+const noticiaService = require('../services/noticia_service');
 
 // POST /categoria
 const crearCategoria = async (req, res) => {
@@ -31,7 +32,11 @@ const obtenerCategoriaConId = async (req, res) => {
   try {
     const categoriaId = req.params['categoriaId'];
 
-    const noticias = await categoriaService.obtenerCategoriaPorId(categoriaId);
+    const noticias = await noticiaService.obtenerNoticiasPorId(categoriaId);
+
+    if (!noticias || noticias.length === 0) {
+      return res.status(404).json({ message: 'Categoría no encontrada o sin noticias' });
+    }
     res.status(200).json(noticias);
   } catch (error) {
     res.status(500).json({ message: 'Error obteniendo la categoria indicada', error: error.message });

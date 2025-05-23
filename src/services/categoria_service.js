@@ -1,4 +1,5 @@
 const { getCategoriasCollection, ObjectId } = require('../config/database');
+const noticiaService = require('../services/noticia_service');
 
 const crearCategoria = async (datos) => {
   try {
@@ -20,18 +21,7 @@ const obtenerCategorias = async () => {
   }
 };
 
-const obtenerCategoriaPorId = async (id) => {
-  try {
-    const categoriasCollection = getCategoriasCollection();
-    const categoria = await categoriasCollection.findOne({ _id: new ObjectId(id) });
-    return categoria;
-  } catch (error) {
-    throw new Error('Error al obtener la categoría: ' + error.message);
-  }
-};
-
 module.exports = {
   crearCategoria,
-  obtenerCategorias,
-  obtenerCategoriaPorId,
+  obtenerCategorias
 };

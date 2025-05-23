@@ -152,6 +152,18 @@ const obtenerNoticiasNasa = async () => {
   }
 };
 
+const obtenerNoticiasPorId = async (categoriaId) => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+    const categoriaObjectId = new ObjectId(categoriaId);
+
+    const noticias = await noticiasCollection.find({ categoriaId: categoriaObjectId }).toArray();
+    return noticias;
+  } catch (error) {
+    throw new Error('Error al obtener noticias por categoría: ' + error.message);
+  }
+};
+
 module.exports = {
   crearNoticia,
   obtenerNoticias,
@@ -162,5 +174,6 @@ module.exports = {
   borrarNoticiaPorId,
   obtenerNoticiasPorRangoAutorId,
   obtenerNoticiasNasa,
-  obtenerNoticiasNasaPorFecha
+  obtenerNoticiasNasaPorFecha,
+  obtenerNoticiasPorId
 };

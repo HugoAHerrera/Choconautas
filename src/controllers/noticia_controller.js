@@ -4,6 +4,11 @@ const { fetchNoticias, obtenerNoticiasEnBloquesNASA } = require('../request_api_
 
 const crearNoticia = async (req, res) => {
   try {
+    const { titulo, contenido, autorId, categoriaId } = req.body;
+
+    if (!titulo || !contenido || !autorId || !categoriaId) {
+      return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    }
     const noticiaData = req.body;
     const noticia = await noticiaService.crearNoticia(noticiaData);
     res.status(201).json(noticia);
@@ -101,6 +106,12 @@ const actualizarNoticiaPorId = async (req, res) => {
     const { id } = req.params;
     const nuevosDatos = req.body;
 
+    const { titulo, contenido, autorId } = req.body;
+
+    if (!titulo || !contenido || !autorId) {
+      return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    }
+
     const noticiaExistente = await noticiaService.obtenerNoticiaPorId(id);
     if (!noticiaExistente) {
       return res.status(404).json({ message: 'Noticia no encontrada' });
@@ -143,7 +154,7 @@ const obtenerComentariosDeNoticia = async (req, res) => {
     const comentarios = await comentarioService.obtenerComentariosDeNoticia(noticiaId);
 
     if (!comentarios.length) {
-      return res.status(404).json({ message: 'Noticia sin comentarios' });
+      return res.status(200).json({ message: 'Noticia sin comentarios' });
     }
 
     res.status(200).json(comentarios);
@@ -189,8 +200,6 @@ const crearComentarioEnNoticia = async (req, res) => {
   }
 };
 
-
-
 const borrarComentariosDeNoticia = async (req, res) => {
   try {
     const { noticiaId } = req.params;
@@ -200,7 +209,7 @@ const borrarComentariosDeNoticia = async (req, res) => {
       return res.status(404).json({ message: 'Noticia no encontrada' });
     }
 
-    res.status(201).json({ message: 'Comentarios eliminados correctamente' });
+    res.status(204).json({ message: 'Comentarios eliminados correctamente' });
   } catch (error) {
     res.status(500).json({ message: 'Error eliminando comentarios', error: error.message });
   }

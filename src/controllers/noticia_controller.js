@@ -43,11 +43,9 @@ const obtenerNoticiasPorFecha = async (req, res) => {
       return res.status(400).json({ message: 'Fecha inválida' });
     }
 
-    // Inicio del día (00:00:00)
     const inicioDia = new Date(fechaObj);
     inicioDia.setHours(0, 0, 0, 0);
 
-    // Fin del día (23:59:59.999)
     const finDia = new Date(fechaObj);
     finDia.setHours(23, 59, 59, 999);
 

@@ -1,16 +1,16 @@
-const { getComentariosCollection, getNoticiasCollection } = require('../config/database');
+const { getComentariosCollection, ObjectId, getNoticiasCollection } = require('../config/database');
 
 const crearComentarioEnNoticia = async (noticiaId, comentarioData) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    const noticia = await noticiasCollection.findOne({ _id: noticiaId });
+    const noticia = await noticiasCollection.findOne({ _id: new ObjectId(noticiaId) });
 
     if (!noticia) throw new Error('Noticia no encontrada');
 
     const comentariosCollection = getComentariosCollection();
 
     const comentario = {
-      noticiaId: noticiaId,
+      noticiaId: new ObjectId(noticiaId),
       autor: comentarioData.autor,
       contenido: comentarioData.contenido,
       fecha: new Date()
@@ -27,12 +27,12 @@ const crearComentarioEnNoticia = async (noticiaId, comentarioData) => {
 const borrarComentariosDeNoticia = async (noticiaId) => {
   try {
     const noticiasCollection = getNoticiasCollection();
-    const noticia = await noticiasCollection.findOne({ _id: noticiaId });
+    const noticia = await noticiasCollection.findOne({ _id: new ObjectId(noticiaId) });
 
     if (!noticia) return false;
 
     const comentariosCollection = getComentariosCollection();
-    await comentariosCollection.deleteMany({ noticiaId: noticiaId });
+    await comentariosCollection.deleteMany({ noticiaId: new ObjectId(noticiaId) });
     return true;
   } catch (error) {
     throw new Error('Error al borrar comentarios: ' + error.message);
@@ -43,7 +43,7 @@ const obtenerComentariosDeNoticia = async (noticiaId) => {
   try {
     const comentariosCollection = getComentariosCollection();
 
-    const comentarios = await comentariosCollection.find({ noticiaId: noticiaId }).toArray();
+    const comentarios = await comentariosCollection.find({ noticiaId: new ObjectId(noticiaId) }).toArray();
     return comentarios;
 
   } catch (error) {
@@ -56,8 +56,8 @@ const obtenerComentarioPorId = async (noticiaId, comentarioId) => {
     const comentariosCollection = getComentariosCollection();
 
     const comentario = await comentariosCollection.findOne({
-      noticiaId: noticiaId,
-      _id: comentarioId
+      noticiaId: new ObjectId(noticiaId),
+      _id: new ObjectId(comentarioId)
     });
 
     return comentario;
@@ -72,8 +72,8 @@ const actualizarComentario = async (noticiaId, comentarioId, nuevosDatos) => {
 
     const resultado = await comentariosCollection.findOneAndUpdate(
       {
-        noticiaId: noticiaId,
-        _id: comentarioId
+        noticiaId: new ObjectId(noticiaId),
+        _id: new ObjectId(comentarioId)
       },
       {
         $set: {
@@ -96,8 +96,8 @@ const borrarComentarioPorId = async (noticiaId, comentarioId) => {
     const comentariosCollection = getComentariosCollection();
 
     const resultado = await comentariosCollection.deleteOne({
-      noticiaId: noticiaId,
-      _id: comentarioId
+      noticiaId: new ObjectId(noticiaId),
+      _id: new ObjectId(comentarioId)
     });
 
     return resultado.deletedCount > 0;

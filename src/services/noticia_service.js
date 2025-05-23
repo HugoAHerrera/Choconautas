@@ -86,14 +86,14 @@ const obtenerNoticiasNasaPorFecha = async (fecha) => {
 
 const obtenerNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
-  return await noticiasCollection.findOne({ _id: id });
+  return await noticiasCollection.findOne({ _id: new ObjectId(id) });
 };
 
 const actualizarNoticiaPorId = async (id, nuevosDatos) => {
   const noticiasCollection = getNoticiasCollection();
 
   const resultado = await noticiasCollection.findOneAndUpdate(
-    { _id: id },
+    { _id: new ObjectId(id) },
     { $set: nuevosDatos },
     { returnDocument: 'after' }
   );
@@ -104,7 +104,7 @@ const actualizarNoticiaPorId = async (id, nuevosDatos) => {
 const borrarNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
 
-  const resultado = await noticiasCollection.deleteOne({ _id: id });
+  const resultado = await noticiasCollection.deleteOne({ _id: new ObjectId(id) });
 
   return resultado.deletedCount > 0;
 };

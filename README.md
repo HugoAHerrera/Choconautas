@@ -13,7 +13,7 @@ Proyecto Sistemas Web II
 
 ### Generador de datos
 
-- Si se busca ejecutar el script de Python generador_noticias.py, es necesario installar:
+- Si se busca ejecutar el script de Python generador_noticias.py, es necesario:
 ```bash
     pip install pymongo
 ```

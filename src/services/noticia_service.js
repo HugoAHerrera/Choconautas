@@ -1,4 +1,6 @@
 const { getNoticiasCollection, ObjectId, getUsuariosCollection, getCategoriasCollection } = require('../config/database');
+const categoriaService = require('../services/categoria_service');
+const usuarioService = require('../services/usuario_service');
 
 const crearNoticia = async (noticiaData) => {
   try {
@@ -36,19 +38,22 @@ const añadirNoticiaNasa = async (noticiaData) => {
   try {
     const noticiasCollection = getNoticiasCollection();
 
-    const noticia = {
+    const categoria = await categoriaService.obtenerCategoriaRandom();
+
+    const usuarioNasa = await usuarioService.obtenerUsuarioNasa();
+
+    const noticiaCompleta = {
       titulo: noticiaData.titulo,
       contenido: noticiaData.contenido,
       fecha: new Date(noticiaData.fecha),
-      autorId:"683050b61388ec33708f9b5e", // ID fijo NASA
-      categoriaId: noticiaData.categoriaId,
+      autorId: usuarioNasa._id,
+      categoriaId: categoria._id
     };
-
-    const result = await noticiasCollection.insertOne(noticia);
-    return await noticiasCollection.findOne({ _id: result.insertedId });
+  
+    await noticiasCollection.insertOne(noticiaCompleta);
 
   } catch (error) {
-    console.error('❌ Error al añadir noticia NASA:', error.message);
+    console.error('Error al añadir noticia NASA:', error.message);
     return null;
   }
 };
@@ -87,24 +92,17 @@ const obtenerNoticiasPorFecha = async (inicioDia, finDia) => {
   }).toArray();
 };
 
-const obtenerNoticiasNasaPorFecha = async (fecha) => {
-  try {
-    const noticiasCollection = getNoticiasCollection();
-
-    const fechaInicio = new Date(fecha);
-    const fechaFin = new Date(new Date(fecha).setUTCHours(23, 59, 59, 999));
-
-    const noticias = await noticiasCollection.find({
-      fecha: { $gte: fechaInicio, $lte: fechaFin },
-      autorId: "682f2d781c60e1f60c175753"
+const obtenerNoticiasNasaPorFecha = async (inicioDia, finDia) => {
+  const noticiasCollection = getNoticiasCollection();
+  const usuarioNasa = await usuarioService.obtenerUsuarioNasa();
+  return await noticiasCollection.find({
+      fecha: {
+        $gte: inicioDia,
+        $lte: finDia
+      },
+      autorId: usuarioNasa._id
     }).toArray();
-
-    return noticias;
-  } catch (error) {
-    throw new Error('Error al obtener noticias por fecha: ' + error.message);
-  }
 };
-
 
 const obtenerNoticiaPorId = async (id) => {
   const noticiasCollection = getNoticiasCollection();
@@ -131,43 +129,17 @@ const borrarNoticiaPorId = async (id) => {
   return resultado.deletedCount > 0;
 };
 
-const obtenerNoticiasPorRangoAutorId = async (min, max) => {
+const obtenerNoticiasDeAutorNasa = async () => {
   try {
+    const usuarioNasa = await usuarioService.obtenerUsuarioNasa();
+    if (!usuarioNasa) throw new Error('Usuario NASA no encontrado');
+
     const noticiasCollection = getNoticiasCollection();
-
-    const noticias = await noticiasCollection.find({
-      autorId: { $gte: min, $lte: max }
-    }).toArray();
-
-    return noticias;
-
-  } catch (error) {
-    throw new Error('Error al obtener noticias por rango de autorId: ' + error.message);
-  }
-};
-
-const fetchNoticiasNASASinAPI = async (fecha) => {
-  try {
-  const noticiasCollection = getNoticiasCollection();
-
-  const noticias = await noticiasCollection.find({
-    fecha: { $regex: `^${fecha}` },
-    autorId: { $gte: 20, $lte: 30 }
-  }).toArray();
-
-  return noticias;
-
-} catch (error) {
-  throw new Error('Error al obtener noticias por fecha y autorId: ' + error.message);
-}
-};
-
-const obtenerNoticiasNasa = async () => {
-  try {
-    const noticiasCollection = getNoticiasCollection();
+    
     const noticias = await noticiasCollection
-      .find({ autorId: "682f2d781c60e1f60c175753" })
+      .find({ autorId: usuarioNasa._id })
       .toArray();
+
     return noticias;
   } catch (error) {
     throw new Error('Error al obtener noticias de la NASA: ' + error.message);
@@ -190,13 +162,11 @@ module.exports = {
   crearNoticia,
   añadirNoticiaNasa,
   obtenerNoticias,
-  fetchNoticiasNASASinAPI,
   obtenerNoticiasPorFecha,
   obtenerNoticiaPorId,
   actualizarNoticiaPorId,
   borrarNoticiaPorId,
-  obtenerNoticiasPorRangoAutorId,
-  obtenerNoticiasNasa,
+  obtenerNoticiasDeAutorNasa,
   obtenerNoticiasNasaPorFecha,
   obtenerNoticiasPorId
 };

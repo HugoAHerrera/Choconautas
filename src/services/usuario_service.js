@@ -62,10 +62,21 @@ const obtenerNoticiasDeUsuario = async (usuarioId) => {
   }
 };
 
+const obtenerUsuarioNasa = async () => {
+  try {
+    const usuariosCollection = getUsuariosCollection();
+    const usuario = await usuariosCollection.findOne({ nombre: "Cuenta Nasa Oficial" });
+    return usuario;
+  } catch (error) {
+    throw new Error('Error al obtener el usuario Nasa: ' + error.message);
+  }
+};
+
 module.exports = {
   obtenerUsuarioPorId,
   crearUsuario,
   actualizarUsuario,
   eliminarUsuario,
   obtenerNoticiasDeUsuario,
+  obtenerUsuarioNasa
 };

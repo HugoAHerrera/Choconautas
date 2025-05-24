@@ -1,5 +1,4 @@
-const { getCategoriasCollection, ObjectId } = require('../config/database');
-const noticiaService = require('../services/noticia_service');
+const { getCategoriasCollection } = require('../config/database');
 
 const crearCategoria = async (datos) => {
   try {
@@ -21,7 +20,23 @@ const obtenerCategorias = async () => {
   }
 };
 
+const obtenerCategoriaRandom = async () => {
+  try {
+    const categoriasCollection = getCategoriasCollection();
+    const count = await categoriasCollection.countDocuments();
+    if (count === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * count);
+    const categoria = await categoriasCollection.find().limit(1).skip(randomIndex).next();
+
+    return categoria;
+  } catch (error) {
+    throw new Error('Error al obtener categoría aleatoria: ' + error.message);
+  }
+};
+
 module.exports = {
   crearCategoria,
-  obtenerCategorias
+  obtenerCategorias,
+  obtenerCategoriaRandom
 };

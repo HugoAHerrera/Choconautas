@@ -2,11 +2,12 @@ const app = require('./app');
 const { MongoClient } = require('mongodb');
 const { execSync } = require('child_process');
 require('dotenv').config();
+const { insertarNoticiaApiNasa } = require('./request_api_nasa/nasaAPOD');
 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
-const checkAndLoadData = async () => {
+const iniciarBaseDatos = async () => {
   try {
     await client.connect();
     const db = client.db('choconautas');
@@ -42,12 +43,23 @@ const checkAndLoadData = async () => {
   }
 };
 
-const startServer = () => {
+const arrancarServidor = () => {
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
   });
+
+  const numMinutos = 3;
+
+  setInterval(async () => {
+    try {
+      await insertarNoticiaApiNasa();
+      console.log('Nueva noticia de la Api externa de la NASA almacenada');
+    } catch (err) {
+      console.error('Error al insertar noticia NASA:', err.message);
+    }
+  }, numMinutos * 60 * 1000);
 };
 
-checkAndLoadData().then(startServer);
+iniciarBaseDatos().then(arrancarServidor);
 

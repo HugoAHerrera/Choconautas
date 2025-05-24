@@ -44,4 +44,3 @@ module.exports = {
   getComentariosCollection,
   ObjectId,
 };
-

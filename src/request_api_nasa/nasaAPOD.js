@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const noticiaService = require('../services/noticia_service');
 
 // Configuración
 const BLOQUE_DIAS = 2;
@@ -84,7 +85,6 @@ async function fetchNoticias(start, end) {
 
   return noticias;
 }
-
 async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
   let start = new Date(startDate);
   let end = new Date(endDate);
@@ -96,7 +96,7 @@ async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
 
     try {
       const noticias = await fetchNoticias(formatDate(start), formatDate(bloqueEnd));
-      
+
       noticias.forEach(noticia => {
         nuevasNoticias.push({
           _id: generarObjectIdSimulado(),
@@ -110,61 +110,20 @@ async function obtenerNoticiasEnBloquesNASA(startDate, endDate) {
 
     } catch (error) {
       console.error(`Error al obtener noticias del ${formatDate(start)} al ${formatDate(bloqueEnd)}:`, error.message);
-      
-      // Cargar noticias existentes del usuario localmente
-      const noticiasPath = path.resolve(__dirname, '../../datasets/noticias.json');
-      if (fs.existsSync(noticiasPath)) {
-        try {
-          const contenido = fs.readFileSync(noticiasPath, 'utf-8');
-          const noticiasExistentes = JSON.parse(contenido);
-          // Filtrar noticias del usuario y dentro del rango de fechas pedido
-          const noticiasUsuario = noticiasExistentes.filter(n =>
-            n.autorId === "683050b61388ec33708f9b5e" &&
-            new Date(n.fecha) >= start &&
-            new Date(n.fecha) <= bloqueEnd
-          );
-          return noticiasUsuario; // Retorna noticias guardadas localmente si falla la API
-        } catch (err) {
-          console.error('Error leyendo noticias locales tras fallo de API:', err.message);
-          return []; // Retorna vacío si falla también
-        }
-      }
-      return []; // Retorna vacío si no existe archivo
+      return []; // Si falla, omitir bloque
     }
 
     start = addDays(bloqueEnd, 1);
     await delay(DELAY_MS);
   }
 
-  // Guardar nuevas noticias como antes (sin cambios)
-  const noticiasPath = path.resolve(__dirname, '../../datasets/noticias.json');
-  let noticiasExistentes = [];
-
-  if (fs.existsSync(noticiasPath)) {
-    try {
-      const contenido = fs.readFileSync(noticiasPath, 'utf-8');
-      noticiasExistentes = JSON.parse(contenido);
-    } catch (error) {
-      console.error('⚠️ Error al leer o parsear noticias.json:', error.message);
-      return nuevasNoticias;
-    }
-  }
-
-  const todasLasNoticias = [...noticiasExistentes, ...nuevasNoticias];
-  const dirPath = path.dirname(noticiasPath);
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-
-  try {
-    fs.writeFileSync(noticiasPath, JSON.stringify(todasLasNoticias, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('❌ Error al guardar noticias.json:', err.message);
+  // Guardar noticias en la base de datos
+  for (const noticia of nuevasNoticias) {
+    await noticiaService.añadirNoticiaNasa(noticia);
   }
 
   return nuevasNoticias;
 }
-
 
 const obtenerNoticiasNasaPorFecha = async (req, res) => {
   try {

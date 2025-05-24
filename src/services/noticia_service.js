@@ -31,6 +31,28 @@ const crearNoticia = async (noticiaData) => {
   }
 };
 
+
+const añadirNoticiaNasa = async (noticiaData) => {
+  try {
+    const noticiasCollection = getNoticiasCollection();
+
+    const noticia = {
+      titulo: noticiaData.titulo,
+      contenido: noticiaData.contenido,
+      fecha: new Date(noticiaData.fecha),
+      autorId:"683050b61388ec33708f9b5e", // ID fijo NASA
+      categoriaId: noticiaData.categoriaId,
+    };
+
+    const result = await noticiasCollection.insertOne(noticia);
+    return await noticiasCollection.findOne({ _id: result.insertedId });
+
+  } catch (error) {
+    console.error('❌ Error al añadir noticia NASA:', error.message);
+    return null;
+  }
+};
+
 const obtenerNoticias = async (pagina = 1, limite = 10, categoria, fechaInicio, fechaFin) => {
   try {
     const noticiasCollection = getNoticiasCollection();
@@ -166,6 +188,7 @@ const obtenerNoticiasPorId = async (categoriaId) => {
 
 module.exports = {
   crearNoticia,
+  añadirNoticiaNasa,
   obtenerNoticias,
   fetchNoticiasNASASinAPI,
   obtenerNoticiasPorFecha,

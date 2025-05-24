@@ -53,8 +53,8 @@ const arrancarServidor = () => {
 
   setInterval(async () => {
     try {
+      console.log('Solicitando noticia a la Api externa de la NASA');
       await insertarNoticiaApiNasa();
-      console.log('Nueva noticia de la Api externa de la NASA almacenada');
     } catch (err) {
       console.error('Error al insertar noticia NASA:', err.message);
     }
